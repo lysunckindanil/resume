@@ -9,6 +9,9 @@ import lombok.Data;
 @Entity
 @Data
 public class Project {
+    public Project() {
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

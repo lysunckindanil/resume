@@ -29,7 +29,7 @@ public class ProjectsController {
     public String project(@PathVariable("id") long id, Model model) {
         model.addAttribute("active", "projects");
         if (projectRepository.findById(id).isPresent()) {
-            model.addAttribute("title", projectRepository.findById(id).get().getTitle());
+            model.addAttribute("project", projectRepository.findById(id).get());
         } else {
             model.addAttribute("title", "No such project");
         }
