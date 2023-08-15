@@ -21,11 +21,16 @@
                 <input th:field="*{description}" type="text" class="form-control" id="description"
                        placeholder="Enter description">
             </div>
-            <button type="submit" class="btn btn-primary">Create</button>
+            <div class="form-group">
+                <label for="image">Image source</label>
+                <input th:field="*{img}" type="text" class="form-control" id="image"
+                       placeholder="Enter image source">
+            </div>
+            <button type="submit" class="btn btn-primary my-2">Create</button>
         </form>
     </div>
 </div>
-
+<footer th:insert="~{fragments/main_page :: footer}"></footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
         crossorigin="anonymous"></script>
