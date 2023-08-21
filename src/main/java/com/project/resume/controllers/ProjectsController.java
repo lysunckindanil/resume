@@ -30,7 +30,7 @@ public class ProjectsController {
     }
 
     @GetMapping("/projects/{id}")
-    public String project(@PathVariable("id") long id, Model model) {
+    public String project(@PathVariable("id") int id, Model model) {
         model.addAttribute("active", "projects");
         if (projectRepository.findById(id).isPresent()) {
             String html = projectRepository.findById(id).get().getFile_html();
@@ -38,5 +38,6 @@ public class ProjectsController {
         }
         return null;
     }
+
 
 }
