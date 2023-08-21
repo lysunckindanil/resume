@@ -4,15 +4,20 @@ import com.project.resume.model.Admin;
 import com.project.resume.model.Project;
 import com.project.resume.repo.ProjectRepository;
 import com.project.resume.repo.UserRepository;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Controller
@@ -47,7 +52,15 @@ public class AdminController {
     }
 
     @PostMapping("add")
-    String addProjectPost(@ModelAttribute Project project) {
+    String addProjectPost(@ModelAttribute Project project, @RequestParam(value = "file", required = false) MultipartFile file) {
+        Path dir = Paths.get("src/main/resources/templates/" + ProjectsController.PROJECT_CUSTOM_HTML);
+        Path filepath = Paths.get(dir.toString(), file.getOriginalFilename());
+        try {
+            file.transferTo(filepath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        project.setFile_html(filepath.getFileName().toString());
         projectRepository.save(project);
         return "redirect:/projects";
     }

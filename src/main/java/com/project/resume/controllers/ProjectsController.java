@@ -12,6 +12,7 @@ import java.util.List;
 
 @Controller
 public class ProjectsController {
+    public static String PROJECT_CUSTOM_HTML = "projects/projects_custom_html/";
     private final ProjectRepository projectRepository;
 
     @Autowired
@@ -32,11 +33,10 @@ public class ProjectsController {
     public String project(@PathVariable("id") long id, Model model) {
         model.addAttribute("active", "projects");
         if (projectRepository.findById(id).isPresent()) {
-            model.addAttribute("project", projectRepository.findById(id).get());
-        } else {
-            model.addAttribute("title", "No such project");
+            String html = projectRepository.findById(id).get().getFile_html();
+            return PROJECT_CUSTOM_HTML + html;
         }
-        return "projects/project";
+        return null;
     }
 
 }

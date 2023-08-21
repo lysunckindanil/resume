@@ -10,7 +10,7 @@
 <body>
 <div class="row flex-nowrap justify-content-md-center align-items-center my-5">
     <div class="col-6">
-        <form th:method="POST" th:action="@{/admin/add}" th:object="${project}">
+        <form th:method="POST" th:action="@{/admin/add}" th:object="${project}" enctype="multipart/form-data">
             <h1>New project form</h1>
             <div class="form-group">
                 <label for="title">Title</label>
@@ -29,7 +29,7 @@
 
             <div class="mb-3">
                 <label for="formFile" class="form-label">Page html</label>
-                <input class="form-control" type="file" id="formFile">
+                <input class="form-control" name="file" type="file" id="formFile">
             </div>
 
             <div class="form-check">
