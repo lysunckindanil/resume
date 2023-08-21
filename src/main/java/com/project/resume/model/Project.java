@@ -15,12 +15,13 @@ public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private boolean main;
 
     private String title;
 
     private String description;
 
-    private String full_text;
-
     private String img;
+
+    private String file_html;
 }

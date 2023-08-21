@@ -9,8 +9,25 @@
 <body>
 <header th:insert="~{fragments/main_page :: header}" th:object="${active}"></header>
 <div class="container">
+    <h1>Main projects</h1>
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        <div class="col" th:each="project : ${projects}">
+        <div class="col" th:each="project : ${main_projects}">
+            <div class="card shadow-sm">
+                <img class="card-img-top" th:src="${project.getImg()}"
+                     th:alt="${project.getTitle()}">
+                <div class="card-body">
+                    <h3 th:text="${project.getTitle()}"></h3>
+                    <a th:href="@{projects/{id}(id=${project.getId()})}">Подробнее</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h1>Others</h1>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="col" th:each="project : ${other_projects}">
             <div class="card shadow-sm">
                 <img class="card-img-top" th:src="${project.getImg()}"
                      th:alt="${project.getTitle()}">

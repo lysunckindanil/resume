@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
+
 @Controller
 public class ProjectsController {
     private final ProjectRepository projectRepository;
@@ -19,8 +21,9 @@ public class ProjectsController {
 
     @GetMapping("/projects")
     public String projects(Model model) {
-        Iterable<Project> projects = projectRepository.findAll();
-        model.addAttribute("projects", projects);
+        List<Project> projects = (List<Project>) projectRepository.findAll();
+        model.addAttribute("main_projects", projects.stream().filter(Project::isMain).toList());
+        model.addAttribute("other_projects", projects.stream().filter(x -> !x.isMain()).toList());
         model.addAttribute("active", "projects");
         return "projects/projects_page";
     }
