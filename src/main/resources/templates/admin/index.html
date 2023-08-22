@@ -20,7 +20,6 @@
         </div>
     </div>
 
-
     <div class="card my-1" th:each="project : ${projects}">
         <div class="card-body">
             <div class="container">
@@ -30,9 +29,9 @@
                            th:text="${project.getTitle()}"></a>
                     </div>
                     <div class="col text-end">
-                        <a th:href="@{admin/projects/{id}/edit(id=${project.getId()})}" class="btn btn-primary">Edit</a>
+                        <a th:href="@{projects/{id}/edit(id=${project.getId()})}" class="btn btn-primary">Edit</a>
                         <form class="d-inline" th:method="POST"
-                              th:action="@{admin/projects/{id}/delete(id=${project.getId()})}">
+                              th:action="@{projects/{id}/delete(id=${project.getId()})}">
                             <input type="submit" class="btn btn-primary" value="Delete"/>
                         </form>
                     </div>
@@ -41,7 +40,7 @@
         </div>
     </div>
 
-    <a th:href="@{admin/projects/add}" type="button" class="btn btn-primary mx-2">Add project</a>
+    <a th:href="@{projects/add}" type="button" class="btn btn-primary mx-2">Add project</a>
 
 </div>
 

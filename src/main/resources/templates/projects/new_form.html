@@ -2,17 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Edit project</title>
+    <title>New project</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
 </head>
 <body>
-<div class="container my-5">
-
-        <form th:method="POST" th:action="@{/admin/projects/{id}/edit(id=${project.getId()})}" th:object="${project}"
-              enctype="multipart/form-data">
-            <h1>Edit <span th:text="${project.getTitle()}">project</span> form</h1>
+<div class="row flex-nowrap justify-content-md-center align-items-center my-5">
+    <div class="col-6">
+        <form th:method="POST" th:action="@{/projects/add}" th:object="${project}" enctype="multipart/form-data">
+            <h1>New project form</h1>
             <div class="form-group">
                 <label for="title">Title</label>
                 <input th:field="*{title}" type="text" class="form-control" id="title" placeholder="Enter label">
@@ -40,9 +39,9 @@
                 </label>
             </div>
 
-            <button type="submit" class="btn btn-primary my-2">Edit project</button>
+            <button type="submit" class="btn btn-primary my-2">Create</button>
         </form>
-
+    </div>
 </div>
 <footer th:insert="~{fragments/main_page :: footer}"></footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
