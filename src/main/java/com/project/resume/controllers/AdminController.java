@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
+@SuppressWarnings("SameReturnValue")
 @Controller
 @RequestMapping("/admin")
 public class AdminController {

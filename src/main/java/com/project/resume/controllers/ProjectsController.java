@@ -14,10 +14,11 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 
+@SuppressWarnings("SameReturnValue")
 @Controller
 @RequestMapping("/projects")
 public class ProjectsController {
-    public static String PROJECT_CUSTOM_HTML = "projects/pages/";
+    public static final String PROJECT_CUSTOM_HTML = "projects/pages/";
     private final ProjectRepository projectRepository;
 
     @Autowired

@@ -33,4 +33,4 @@ build/
 .vscode/
 
 application.properties
-projects_custom_html/
+pages/
