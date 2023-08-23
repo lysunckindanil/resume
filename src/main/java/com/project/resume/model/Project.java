@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Project {
+public class Project implements Comparable<Project> {
     public Project() {
     }
 
@@ -24,4 +24,10 @@ public class Project {
     private String img;
 
     private String file_html;
+
+
+    @Override
+    public int compareTo(Project o) {
+        return this.id - o.id;
+    }
 }

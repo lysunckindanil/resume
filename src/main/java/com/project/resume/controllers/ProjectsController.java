@@ -29,8 +29,8 @@ public class ProjectsController {
     @GetMapping()
     public String projects(Model model) {
         List<Project> projects = (List<Project>) projectRepository.findAll();
-        model.addAttribute("main_projects", projects.stream().filter(Project::isMain).toList());
-        model.addAttribute("other_projects", projects.stream().filter(x -> !x.isMain()).toList());
+        model.addAttribute("main_projects", projects.stream().filter(Project::isMain).sorted().toList());
+        model.addAttribute("other_projects", projects.stream().filter(x -> !x.isMain()).sorted().toList());
         model.addAttribute("active", "projects");
         return "projects/projects";
     }
@@ -74,18 +74,14 @@ public class ProjectsController {
     @PostMapping("/{id}/edit")
     String editProjectPost(@ModelAttribute Project project, @PathVariable("id") int id, @RequestParam(value = "file", required = false) MultipartFile file) {
         if (projectRepository.findById(id).isPresent()) {
-            Project original_project = projectRepository.findById(id).get();
-            original_project.setTitle(project.getTitle());
-            original_project.setDescription(project.getDescription());
-            original_project.setMain(project.isMain());
-            original_project.setImg(project.getImg());
             if (!Objects.requireNonNull(file.getOriginalFilename()).isEmpty()) {
-                addProjectPost(original_project, file);
+                addProjectPost(project, file);
             } else {
-                projectRepository.save(original_project);
+                Project original_project = projectRepository.findById(id).get();
+                project.setFile_html(original_project.getFile_html());
+                projectRepository.save(project);
             }
         }
-
         return "redirect:/admin";
     }
 

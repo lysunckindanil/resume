@@ -1,6 +1,7 @@
 package com.project.resume.controllers;
 
 import com.project.resume.model.Admin;
+import com.project.resume.model.Project;
 import com.project.resume.repo.ProjectRepository;
 import com.project.resume.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,9 @@ public class AdminController {
     public String index(@ModelAttribute Admin admin, Model model) {
         List<Admin> adminList = (List<Admin>) userRepository.findAll();
         if (adminList.stream().anyMatch(x -> x.equals(admin))) {
-            model.addAttribute("projects", projectRepository.findAll());
+            List<Project> projects = (List<Project>) projectRepository.findAll();
+            model.addAttribute("projects", projects.stream().sorted().toList());
             return "admin/index";
-        } else return "redirect:/admin/index";
+        } else return "redirect:/admin";
     }
 }
