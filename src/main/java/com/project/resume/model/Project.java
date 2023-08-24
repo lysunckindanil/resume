@@ -10,6 +10,8 @@ import lombok.Data;
 @Data
 public class Project implements Comparable<Project> {
     public Project() {
+        //default
+        setMain(true);
     }
 
     @Id

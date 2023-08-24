@@ -2,6 +2,7 @@ package com.project.resume.controllers;
 
 import com.project.resume.model.Project;
 import com.project.resume.repo.ProjectRepository;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -37,7 +38,15 @@ public class ProjectController {
     public String project(@PathVariable("id") int id, Model model) {
         if (projectRepository.findById(id).isPresent()) {
             Project project = projectRepository.findById(id).get();
-            model.addAttribute("fragment", PROJECT_CUSTOM_HTML + project.getFile_html().replace(".html", ""));
+            @Data
+            class Fragment {
+                public String path;
+                public String name;
+            }
+            Fragment fragment = new Fragment();
+            fragment.setName(project.getFile_html().replace(".html", ""));
+            fragment.setPath(PROJECT_CUSTOM_HTML + fragment.name);
+            model.addAttribute("fragment", fragment);
             model.addAttribute("project", project);
             return "projects/project";
         }
@@ -61,7 +70,7 @@ public class ProjectController {
         }
         project.setFile_html(filepath.getFileName().toString());
         projectRepository.save(project);
-        return "redirect:/admin";
+        return "redirect:/projects";
     }
 
     @GetMapping("/{id}/edit")
@@ -81,13 +90,13 @@ public class ProjectController {
                 projectRepository.save(project);
             }
         }
-        return "redirect:/admin";
+        return "redirect:/projects/" + id;
     }
 
     @PostMapping("/{id}/delete")
     String deleteProject(@PathVariable("id") int id) {
         projectRepository.deleteById(id);
-        return "redirect:/admin";
+        return "redirect:/projects";
     }
 
 }

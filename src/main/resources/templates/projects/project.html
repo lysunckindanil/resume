@@ -10,7 +10,7 @@
 <body>
 <header th:insert="~{fragments/main_page :: header(active='projects')}"></header>
 <div class="container">
-    <div class="row my-3">
+    <div class="row my-4" th:if="${true}">
         <div class="col text-end">
             <a th:href="@{/projects/{id}/edit(id=${project.getId()})}" class="btn btn-primary">Edit</a>
             <form class="d-inline" th:method="post"
@@ -20,7 +20,8 @@
         </div>
     </div>
 
-    <!--<div class="container my-5" th:insert="~{projects/pages :: ${fragment}}"></div>-->
+
+    <div th:replace="~{${fragment.path} :: ${fragment.name}}"></div>
 
 
 </div>

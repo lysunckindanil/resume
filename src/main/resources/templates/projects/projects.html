@@ -8,41 +8,44 @@
 </head>
 <body>
 <header th:insert="~{fragments/main_page :: header(active='projects')}"></header>
-<div class="container my-5">
-    <h1 class="display-5 mx-2 my-4">Main projects</h1>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-1">
-        <div class="col" th:each="project : ${main_projects}">
-            <div class="card shadow-sm">
-                <img class="card-img-top" th:src="${project.getImg()}"
-                     th:alt="${project.getTitle()}">
-                <div class="card-body">
-                    <h4 class="card-title" th:text="${project.getTitle()}"></h4>
-                    <p class="card-subtitle" th:text="${project.getDescription()}"></p>
-                    <a th:href="@{projects/{id}(id=${project.getId()})}">Подробнее</a>
+<main class="container">
+    <div class="container my-4" th:if="${main_projects.size()>0}">
+        <h1 class="display-5 mx-2 my-4">Main projects</h1>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-1">
+            <div class="col" th:each="project : ${main_projects}">
+                <div class="card shadow-sm">
+                    <img class="card-img-top" th:src="${project.getImg()}"
+                         th:alt="${project.getTitle()}">
+                    <div class="card-body">
+                        <h4 class="card-title" th:text="${project.getTitle()}"></h4>
+                        <p class="card-subtitle" th:text="${project.getDescription()}"></p>
+                        <a th:href="@{projects/{id}(id=${project.getId()})}">Подробнее</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-
-<div class="container my-5">
-    <h1 class="display-5 mx-2 my-4">Others</h1>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-1">
-        <div class="col" th:each="project : ${other_projects}">
-            <div class="card shadow-sm">
-                <img class="card-img-top" th:src="${project.getImg()}"
-                     th:alt="${project.getTitle()}">
-                <div class="card-body">
-                    <h4 class="card-title" th:text="${project.getTitle()}"></h4>
-                    <p class="card-subtitle" th:text="${project.getDescription()}"></p>
-                    <a th:href="@{projects/{id}(id=${project.getId()})}">Подробнее</a>
+    <div class="container my-4" th:if="${other_projects.size()>0}">
+        <h1 class="display-5 mx-2 my-4">Others</h1>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-1">
+            <div class="col" th:each="project : ${other_projects}">
+                <div class="card shadow-sm">
+                    <img class="card-img-top" th:src="${project.getImg()}"
+                         th:alt="${project.getTitle()}">
+                    <div class="card-body">
+                        <h4 class="card-title" th:text="${project.getTitle()}"></h4>
+                        <p class="card-subtitle" th:text="${project.getDescription()}"></p>
+                        <a th:href="@{projects/{id}(id=${project.getId()})}">Подробнее</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
+    <div class="container my-3">
+        <a th:href="@{projects/add}" class="btn btn-secondary btn-lg d-block">Create new project page</a>
+    </div>
+</main>
 <footer th:insert="~{fragments/main_page :: footer}"></footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
