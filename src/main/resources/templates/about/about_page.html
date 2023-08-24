@@ -7,7 +7,7 @@
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 </head>
 <body>
-<header th:insert="~{fragments/main_page :: header}" th:object="${active}"></header>
+<header th:insert="~{fragments/main_page :: header(active='about')}"></header>
 
 
 <main class="container">

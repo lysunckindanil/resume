@@ -30,16 +30,15 @@ public class ProjectController {
         List<Project> projects = (List<Project>) projectRepository.findAll();
         model.addAttribute("main_projects", projects.stream().filter(Project::isMain).sorted().toList());
         model.addAttribute("other_projects", projects.stream().filter(x -> !x.isMain()).sorted().toList());
-        model.addAttribute("active", "projects");
         return "projects/projects";
     }
 
     @GetMapping("/{id}")
     public String project(@PathVariable("id") int id, Model model) {
-        model.addAttribute("active", "projects");
         if (projectRepository.findById(id).isPresent()) {
             Project project = projectRepository.findById(id).get();
             model.addAttribute("fragment", PROJECT_CUSTOM_HTML + project.getFile_html().replace(".html", ""));
+            model.addAttribute("project", project);
             return "projects/project";
         }
         return null;

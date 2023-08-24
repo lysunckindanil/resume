@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class AboutController {
     @GetMapping
     public String index(Model model) {
-        model.addAttribute("active", "about");
         return "about/about_page";
     }
 }

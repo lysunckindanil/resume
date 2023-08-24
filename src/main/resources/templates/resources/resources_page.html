@@ -8,7 +8,7 @@
 
 </head>
 <body>
-<header th:insert="~{fragments/main_page :: header}" th:object="${active}"></header>
+<header th:insert="~{fragments/main_page :: header(active='resources')}"></header>
 <div class="container"><h1 class="display-5">Resources</h1></div>
 <footer th:insert="~{fragments/main_page :: footer}"></footer>
 
