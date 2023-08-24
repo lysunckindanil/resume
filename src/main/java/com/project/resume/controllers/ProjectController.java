@@ -2,7 +2,8 @@ package com.project.resume.controllers;
 
 import com.project.resume.model.Project;
 import com.project.resume.repo.ProjectRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,14 +18,12 @@ import java.util.Objects;
 @SuppressWarnings("SameReturnValue")
 @Controller
 @RequestMapping("/projects")
-public class ProjectsController {
+@RequiredArgsConstructor
+@Slf4j
+public class ProjectController {
     public static final String PROJECT_CUSTOM_HTML = "projects/pages/";
     private final ProjectRepository projectRepository;
 
-    @Autowired
-    public ProjectsController(ProjectRepository projectRepository) {
-        this.projectRepository = projectRepository;
-    }
 
     @GetMapping()
     public String projects(Model model) {
@@ -39,8 +38,9 @@ public class ProjectsController {
     public String project(@PathVariable("id") int id, Model model) {
         model.addAttribute("active", "projects");
         if (projectRepository.findById(id).isPresent()) {
-            String html = projectRepository.findById(id).get().getFile_html();
-            return PROJECT_CUSTOM_HTML + html;
+            Project project = projectRepository.findById(id).get();
+            model.addAttribute("fragment", PROJECT_CUSTOM_HTML + project.getFile_html().replace(".html", ""));
+            return "projects/project";
         }
         return null;
     }
@@ -53,7 +53,7 @@ public class ProjectsController {
 
     @PostMapping("/add")
     String addProjectPost(@ModelAttribute Project project, @RequestParam(value = "file", required = false) MultipartFile file) {
-        Path dir = Paths.get("src/main/resources/templates/" + ProjectsController.PROJECT_CUSTOM_HTML);
+        Path dir = Paths.get("src/main/resources/templates/" + ProjectController.PROJECT_CUSTOM_HTML);
         Path filepath = Paths.get(dir.toString(), file.getOriginalFilename());
         try {
             file.transferTo(filepath);

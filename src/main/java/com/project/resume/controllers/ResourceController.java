@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @SuppressWarnings("SameReturnValue")
 @Controller
-public class MainController {
-    @GetMapping
-    public String index(Model model) {
-        model.addAttribute("active", "about");
-        return "main/about_page";
+public class ResourceController {
+    @GetMapping("/resources")
+    public String resources(Model model) {
+        model.addAttribute("active", "resources");
+        return "resources/resources_page";
     }
 }

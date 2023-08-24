@@ -1,15 +1,13 @@
 package com.project.resume.controllers;
 
-import com.project.resume.model.Admin;
 import com.project.resume.model.Project;
+import com.project.resume.model.User;
 import com.project.resume.repo.ProjectRepository;
-import com.project.resume.repo.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -17,29 +15,14 @@ import java.util.List;
 @SuppressWarnings("SameReturnValue")
 @Controller
 @RequestMapping("/admin")
+@RequiredArgsConstructor
 public class AdminController {
     private final ProjectRepository projectRepository;
-    private final UserRepository userRepository;
-
-    @Autowired
-    public AdminController(ProjectRepository projectRepository, UserRepository userRepository) {
-        this.projectRepository = projectRepository;
-        this.userRepository = userRepository;
-    }
 
     @GetMapping
-    public String authorization(Model model) {
-        model.addAttribute("admin", new Admin());
-        return "admin/authorization";
-    }
-
-    @PostMapping
-    public String index(@ModelAttribute Admin admin, Model model) {
-        List<Admin> adminList = (List<Admin>) userRepository.findAll();
-        if (adminList.stream().anyMatch(x -> x.equals(admin))) {
-            List<Project> projects = (List<Project>) projectRepository.findAll();
-            model.addAttribute("projects", projects.stream().sorted().toList());
-            return "admin/index";
-        } else return "redirect:/admin";
+    public String index(@ModelAttribute User user, Model model) {
+        List<Project> projects = (List<Project>) projectRepository.findAll();
+        model.addAttribute("projects", projects.stream().sorted().toList());
+        return "admin/index";
     }
 }

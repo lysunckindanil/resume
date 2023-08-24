@@ -1,17 +1,15 @@
 package com.project.resume.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Objects;
 
 @Entity
 @Data
-public class Admin {
-    public Admin() {
+@Table(name = "users")
+public class User {
+    public User() {
     }
 
     @Id
@@ -24,8 +22,8 @@ public class Admin {
     public boolean equals(Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
-        Admin admin = (Admin) object;
-        return Objects.equals(login, admin.login) && Objects.equals(password, admin.password);
+        User user = (User) object;
+        return Objects.equals(login, user.login) && Objects.equals(password, user.password);
     }
 
     @Override

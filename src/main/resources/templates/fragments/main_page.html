@@ -8,48 +8,41 @@
 <div th:fragment="header">
     <div class="container">
         <header class="border-bottom lh-1 py-3">
-            <div class="row flex-nowrap justify-content-md-center align-items-center">
+            <div class="row flex-nowrap justify-content-center">
                 <div class="col-md-auto text-center">
-                    <a class="blog-header-logo text-body-emphasis text-decoration-none" href="/admin">My resume
+                    <a class="page-header text-body-emphasis text-decoration-none" href="/admin">My resume
                         project</a>
                 </div>
             </div>
         </header>
 
-        <div th:insert="~{fragments/main_page :: ${active}}"></div>
+        <div class="nav-scroller py-1 mb-3 border-bottom">
+            <div th:insert="~{fragments/main_page :: ${active}}"></div>
+        </div>
     </div>
 </div>
 
 
-<div th:fragment="about">
-    <div class="nav-scroller py-1 mb-3 border-bottom">
-        <nav class="nav nav-underline">
-            <a class="nav-item nav-link link-body-emphasis active" href="/">About me</a>
-            <a class="nav-item nav-link link-body-emphasis" href="/projects">Projects</a>
-            <a class="nav-item nav-link link-body-emphasis" href="/resources">Resources</a>
-        </nav>
-    </div>
-</div>
+<nav th:fragment="about" class="nav nav-underline">
+    <a class="nav-item nav-link link-body-emphasis active" href="/">About me</a>
+    <a class="nav-item nav-link link-body-emphasis" href="/projects">Projects</a>
+    <a class="nav-item nav-link link-body-emphasis" href="/resources">Resources</a>
+</nav>
 
-<div th:fragment="projects">
-    <div class="nav-scroller py-1 mb-3 border-bottom">
-        <nav class="nav nav-underline">
-            <a class="nav-item nav-link link-body-emphasis" href="/">About me</a>
-            <a class="nav-item nav-link link-body-emphasis active" href="/projects">Projects</a>
-            <a class="nav-item nav-link link-body-emphasis" href="/resources">Resources</a>
-        </nav>
-    </div>
-</div>
 
-<div th:fragment="resources">
-    <div class="nav-scroller py-1 mb-3 border-bottom">
-        <nav class="nav nav-underline">
-            <a class="nav-item nav-link link-body-emphasis" href="/">About me</a>
-            <a class="nav-item nav-link link-body-emphasis" href="/projects">Projects</a>
-            <a class="nav-item nav-link link-body-emphasis active" href="/resources">Resources</a>
-        </nav>
-    </div>
-</div>
+<nav th:fragment="projects" class="nav nav-underline">
+    <a class="nav-item nav-link link-body-emphasis" href="/">About me</a>
+    <a class="nav-item nav-link link-body-emphasis active" href="/projects">Projects</a>
+    <a class="nav-item nav-link link-body-emphasis" href="/resources">Resources</a>
+</nav>
+
+
+<nav th:fragment="resources" class="nav nav-underline">
+    <a class="nav-item nav-link link-body-emphasis" href="/">About me</a>
+    <a class="nav-item nav-link link-body-emphasis" href="/projects">Projects</a>
+    <a class="nav-item nav-link link-body-emphasis active" href="/resources">Resources</a>
+</nav>
+
 
 <div th:fragment="footer">
     <footer class="py-5 text-center text-body-secondary bg-body-tertiary">
