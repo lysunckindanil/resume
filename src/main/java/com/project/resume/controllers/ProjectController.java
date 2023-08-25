@@ -33,7 +33,7 @@ public class ProjectController {
         List<Project> projects = projectRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
         model.addAttribute("main_projects", projects.stream().filter(Project::isMain).toList());
         model.addAttribute("other_projects", projects.stream().filter(x -> !x.isMain()).toList());
-        model.addAttribute("isAdmin", principal != null);
+        model.addAttribute("user", principal == null ? "" : principal.getName());
         return "projects/projects";
     }
 
@@ -51,7 +51,7 @@ public class ProjectController {
             fragment.setPath(PROJECT_CUSTOM_HTML + fragment.name);
             model.addAttribute("fragment", fragment);
             model.addAttribute("project", project);
-            model.addAttribute("isAdmin", principal != null);
+            model.addAttribute("user", principal == null ? "" : principal.getName());
 
             return "projects/project";
         }

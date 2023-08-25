@@ -43,7 +43,7 @@
         </div>
     </div>
 
-    <div th:if="${isAdmin}" class="container my-3">
+    <div th:if="${user=='admin'}" class="container my-3">
         <a th:href="@{projects/add}" class="btn btn-secondary btn-lg d-block">Create new project page</a>
     </div>
 </main>

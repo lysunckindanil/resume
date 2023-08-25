@@ -21,7 +21,7 @@
                 </ol>
             </nav>
         </div>
-        <div th:if="${isAdmin}" class="col text-end">
+        <div th:if="${user=='admin'}" class="col text-end">
             <div class="dropdown">
                 <a class="btn btn-secondary dropdown-toggle"
                    role="button" data-bs-toggle="dropdown"
