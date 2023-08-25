@@ -10,6 +10,7 @@
 <body>
 <header th:insert="~{fragments/main_page :: header(active='projects')}"></header>
 <main class="container">
+
     <div class="row">
         <div class="col">
 
@@ -20,7 +21,7 @@
                 </ol>
             </nav>
         </div>
-        <div th:if="${true}" class="col text-end">
+        <div th:if="${isAdmin}" class="col text-end">
             <div class="dropdown">
                 <a class="btn btn-secondary dropdown-toggle"
                    role="button" data-bs-toggle="dropdown"
@@ -41,6 +42,7 @@
             </div>
         </div>
     </div>
+
     <div th:replace="~{${fragment.path} :: ${fragment.name}}"></div>
 
 

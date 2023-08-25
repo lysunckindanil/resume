@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,15 +29,16 @@ public class ProjectController {
 
 
     @GetMapping()
-    public String projects(Model model) {
+    public String projects(Principal principal, Model model) {
         List<Project> projects = projectRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
         model.addAttribute("main_projects", projects.stream().filter(Project::isMain).toList());
         model.addAttribute("other_projects", projects.stream().filter(x -> !x.isMain()).toList());
+        model.addAttribute("isAdmin", principal != null);
         return "projects/projects";
     }
 
     @GetMapping("/{id}")
-    public String project(@PathVariable("id") int id, Model model) {
+    public String project(@PathVariable("id") int id, Principal principal, Model model) {
         if (projectRepository.findById(id).isPresent()) {
             Project project = projectRepository.findById(id).get();
             @Data
@@ -49,6 +51,8 @@ public class ProjectController {
             fragment.setPath(PROJECT_CUSTOM_HTML + fragment.name);
             model.addAttribute("fragment", fragment);
             model.addAttribute("project", project);
+            model.addAttribute("isAdmin", principal != null);
+
             return "projects/project";
         }
         return null;

@@ -20,7 +20,9 @@ public class SecurityConfig {
                 .anyRequest()
                 .permitAll()
                 .and()
-                .httpBasic();
+                .formLogin()
+                .and()
+                .logout().logoutSuccessUrl("/");
 
         return http.build();
     }
