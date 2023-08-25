@@ -23,6 +23,6 @@ public class AdminController {
     public String index(@ModelAttribute User user, Model model) {
         List<Project> projects = (List<Project>) projectRepository.findAll();
         model.addAttribute("projects", projects.stream().sorted().toList());
-        return "admin/index";
+        return "redirect:/";
     }
 }
