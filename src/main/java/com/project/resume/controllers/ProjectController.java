@@ -5,6 +5,7 @@ import com.project.resume.repo.ProjectRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,9 +29,9 @@ public class ProjectController {
 
     @GetMapping()
     public String projects(Model model) {
-        List<Project> projects = (List<Project>) projectRepository.findAll();
-        model.addAttribute("main_projects", projects.stream().filter(Project::isMain).sorted().toList());
-        model.addAttribute("other_projects", projects.stream().filter(x -> !x.isMain()).sorted().toList());
+        List<Project> projects = projectRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+        model.addAttribute("main_projects", projects.stream().filter(Project::isMain).toList());
+        model.addAttribute("other_projects", projects.stream().filter(x -> !x.isMain()).toList());
         return "projects/projects";
     }
 
