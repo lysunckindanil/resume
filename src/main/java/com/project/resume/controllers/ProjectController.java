@@ -71,7 +71,7 @@ public class ProjectController {
         try {
             file.transferTo(filepath);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            log.error("Unable to transfer fragment file");
         }
         project.setFile_html(filepath.getFileName().toString());
         projectRepository.save(project);
