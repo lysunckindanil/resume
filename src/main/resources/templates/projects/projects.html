@@ -7,13 +7,15 @@
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 </head>
 <body>
-<header th:insert="~{fragments/main_page :: header(active='projects')}"></header>
-<main class="container">
+<div th:replace="~{fragments/main_page :: header(active='projects')}"></div>
+<main class="p-4" style="background-color: #ECECEC">
+
+    <!--    Main projects-->
     <div class="container my-4" th:if="${main_projects.size()>0}">
-        <h1 class="display-5 mx-2 my-4">Main projects</h1>
+        <h1 class="display-5 my-4">Основные проекты</h1>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-1">
             <div class="col" th:each="project : ${main_projects}">
-                <div class="card shadow-sm">
+                <div class="card shadow-sm h-100">
                     <img class="card-img-top" th:src="${project.getImg()}"
                          th:alt="${project.getTitle()}">
                     <div class="card-body">
@@ -26,11 +28,12 @@
         </div>
     </div>
 
+    <!--    Other projects-->
     <div class="container my-4" th:if="${other_projects.size()>0}">
-        <h1 class="display-5 mx-2 my-4">Others</h1>
+        <h1 class="display-5 my-4">Остальное</h1>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-1">
             <div class="col" th:each="project : ${other_projects}">
-                <div class="card shadow-sm">
+                <div class="card shadow-sm h-100">
                     <img class="card-img-top" th:src="${project.getImg()}"
                          th:alt="${project.getTitle()}">
                     <div class="card-body">
@@ -44,10 +47,10 @@
     </div>
 
     <div th:if="${user=='admin'}" class="container my-3">
-        <a th:href="@{projects/add}" class="btn btn-secondary btn-lg d-block">Create new project page</a>
+        <a th:href="@{projects/add}" class="btn btn-secondary btn-lg d-block">Создать страницу нового проекта</a>
     </div>
 </main>
-<footer th:insert="~{fragments/main_page :: footer}"></footer>
+<footer th:replace="~{fragments/main_page :: footer}"></footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"

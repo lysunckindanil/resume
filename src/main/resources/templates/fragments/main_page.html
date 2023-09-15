@@ -5,47 +5,43 @@
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 </head>
 
-<div th:fragment="header(active)">
+<div th:fragment="header(active)" style="background-color: #C2C9D3">
     <div class="container">
-        <header class="border-bottom lh-1 py-3">
-            <div class="row flex-nowrap justify-content-center">
-                <div class="col-md-auto text-center">
-                    <a class="page-header text-body-emphasis text-decoration-none" th:href="@{/login}">My resume
-                        project</a>
-                </div>
-            </div>
-        </header>
+        <header class="d-flex flex-wrap justify-content-center py-3">
+            <a th:href="@{/login}"
+               class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                <span class="fs-4">Resume project</span>
+            </a>
 
-        <div class="nav-scroller py-1 mb-3 border-bottom">
-            <div th:insert="~{fragments/main_page :: ${active}}"></div>
-        </div>
+            <div th:replace="~{fragments/main_page :: ${active}}"></div>
+        </header>
     </div>
 </div>
 
 
 <nav th:fragment="about" class="nav nav-underline">
-    <a class="nav-item nav-link link-body-emphasis active" href="/">About me</a>
-    <a class="nav-item nav-link link-body-emphasis" href="/projects">Projects</a>
-    <a class="nav-item nav-link link-body-emphasis" href="/resources">Resources</a>
+    <a class="nav-item nav-link link-body-emphasis active" href="/">Обо мне</a>
+    <a class="nav-item nav-link link-body-emphasis" href="/projects">Проекты</a>
+    <a class="nav-item nav-link link-body-emphasis" href="/resources">Ресурсы</a>
 </nav>
 
 
 <nav th:fragment="projects" class="nav nav-underline">
-    <a class="nav-item nav-link link-body-emphasis" href="/">About me</a>
-    <a class="nav-item nav-link link-body-emphasis active" href="/projects">Projects</a>
-    <a class="nav-item nav-link link-body-emphasis" href="/resources">Resources</a>
+    <a class="nav-item nav-link link-body-emphasis" href="/">Обо мне</a>
+    <a class="nav-item nav-link link-body-emphasis active" href="/projects">Проекты</a>
+    <a class="nav-item nav-link link-body-emphasis" href="/resources">Ресурсы</a>
 </nav>
 
 
 <nav th:fragment="resources" class="nav nav-underline">
-    <a class="nav-item nav-link link-body-emphasis" href="/">About me</a>
-    <a class="nav-item nav-link link-body-emphasis" href="/projects">Projects</a>
-    <a class="nav-item nav-link link-body-emphasis active" href="/resources">Resources</a>
+    <a class="nav-item nav-link link-body-emphasis" href="/">Обо мне</a>
+    <a class="nav-item nav-link link-body-emphasis" href="/projects">Проекты</a>
+    <a class="nav-item nav-link link-body-emphasis active" href="/resources">Ресурсы</a>
 </nav>
 
 
-<div th:fragment="footer">
-    <footer class="py-5 text-center text-body-secondary bg-body-tertiary">
+<footer th:fragment="footer">
+    <footer class="py-5 text-center text-body-secondary" style="background-color: #C2C9D3">
         <p>Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a
                 href="https://twitter.com/mdo">@mdo</a>.
         </p>
@@ -53,4 +49,4 @@
             <a href="#">Back to top</a>
         </p>
     </footer>
-</div>
+</footer>

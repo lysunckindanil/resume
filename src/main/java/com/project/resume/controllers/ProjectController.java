@@ -2,8 +2,9 @@ package com.project.resume.controllers;
 
 import com.project.resume.model.Project;
 import com.project.resume.repo.ProjectRepository;
-import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -41,7 +42,8 @@ public class ProjectController {
     public String project(@PathVariable("id") int id, Principal principal, Model model) {
         if (projectRepository.findById(id).isPresent()) {
             Project project = projectRepository.findById(id).get();
-            @Data
+            @Getter
+            @Setter
             class Fragment {
                 public String path;
                 public String name;

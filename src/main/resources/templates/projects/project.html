@@ -9,41 +9,43 @@
 </head>
 <body>
 <header th:insert="~{fragments/main_page :: header(active='projects')}"></header>
-<main class="container">
+<main class="p-4" style="background-color: #ECECEC">
+    <div class="container">
+        <div class="row">
+            <div class="col">
 
-    <div class="row">
-        <div class="col">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/projects}">Проекты</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" th:text="${project.getTitle()}"></li>
+                    </ol>
+                </nav>
+            </div>
+            <div th:if="${user=='admin'}" class="col text-end">
+                <div class="dropdown">
+                    <a class="btn btn-secondary dropdown-toggle"
+                       role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Редактировать
+                    </a>
 
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a th:href="@{/projects}">Projects</a></li>
-                    <li class="breadcrumb-item active" aria-current="page" th:text="${project.getTitle()}"></li>
-                </ol>
-            </nav>
-        </div>
-        <div th:if="${user=='admin'}" class="col text-end">
-            <div class="dropdown">
-                <a class="btn btn-secondary dropdown-toggle"
-                   role="button" data-bs-toggle="dropdown"
-                   aria-expanded="false">
-                    Edit project
-                </a>
-
-                <ul class="dropdown-menu">
-                    <li><a th:href="@{/projects/{id}/edit(id=${project.getId()})}" class="dropdown-item"
-                           href="#">Edit</a></li>
-                    <li>
-                        <form th:method="post"
-                              th:action="@{/projects/{id}/delete(id=${project.getId()})}">
-                            <input type="submit" class="dropdown-item d-inline" value="Delete"/>
-                        </form>
-                    </li>
-                </ul>
+                    <ul class="dropdown-menu">
+                        <li><a th:href="@{/projects/{id}/edit(id=${project.getId()})}" class="dropdown-item"
+                               href="#">Редактировать</a></li>
+                        <li>
+                            <form th:method="post"
+                                  th:action="@{/projects/{id}/delete(id=${project.getId()})}">
+                                <input type="submit" class="dropdown-item d-inline" value="Удалить"/>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
 
-    <div th:replace="~{${fragment.path} :: ${fragment.name}}"></div>
+    <div
+         th:replace="~{${fragment.path} :: ${fragment.name}}"></div>
 
 
 </main>
