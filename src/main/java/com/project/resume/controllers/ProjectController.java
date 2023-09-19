@@ -58,7 +58,7 @@ public class ProjectController {
 
             return "projects/project";
         }
-        return "projects/blank";
+        return "redirect:/projects";
     }
 
     @GetMapping("/add")
@@ -68,25 +68,20 @@ public class ProjectController {
     }
 
     @PostMapping("/add")
-    private String addProjectPost(@ModelAttribute Project project, @RequestParam(value = "page_file", required = false) MultipartFile page_file, @RequestParam(value = "image_file", required = false) MultipartFile image_file) {
-        System.out.println(page_file.isEmpty());
-        if (!page_file.isEmpty()) {
-            try {
-                saveHtmlPage(page_file);
-                project.setPage(page_file.getName());
-            } catch (IOException e) {
-                log.error("Unable to transfer html page");
-            }
-        } else if (project.getPage() == null) project.setPage("blank.html");
+    private String addProjectPost(@ModelAttribute Project project, @RequestParam(value = "page_file") MultipartFile page_file, @RequestParam(value = "image_file") MultipartFile image_file) {
+        try {
+            saveHtmlPage(page_file);
+            project.setPage(page_file.getOriginalFilename());
+        } catch (IOException e) {
+            log.error("Unable to transfer html page");
+        }
 
 
-        if (!image_file.isEmpty()) {
-            try {
-                Image image = ImageController.toImageEntity(image_file);
-                project.setImage(image);
-            } catch (IOException e) {
-                log.error("Unable to add image file");
-            }
+        try {
+            Image image = ImageController.toImageEntity(image_file);
+            project.setImage(image);
+        } catch (IOException e) {
+            log.error("Unable to add image file");
         }
 
         projectRepository.save(project);
@@ -100,10 +95,35 @@ public class ProjectController {
         return "projects/edit";
     }
 
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     @PostMapping("/{id}/edit")
     private String editProjectPost(@ModelAttribute Project project, @PathVariable("id") int id, @RequestParam(value = "page_file", required = false) MultipartFile page_file, @RequestParam(value = "image_file", required = false) MultipartFile image_file) {
-        addProjectPost(project, page_file, image_file);
-        return "redirect:/projects/" + id;
+        Project original_project = projectRepository.findById(id).get();
+
+        if (!page_file.isEmpty()) {
+            try {
+                saveHtmlPage(page_file);
+                original_project.setPage(page_file.getOriginalFilename());
+            } catch (IOException e) {
+                log.error("Unable to transfer html page");
+            }
+        }
+
+        if (!image_file.isEmpty()) {
+            try {
+                Image image = ImageController.toImageEntity(image_file);
+                original_project.setImage(image);
+            } catch (IOException e) {
+                log.error("Unable to add image file");
+            }
+        }
+
+        original_project.setTitle(project.getTitle());
+        original_project.setDescription(project.getDescription());
+        original_project.setMain(project.isMain());
+
+        projectRepository.save(original_project);
+        return "redirect:/projects/" + project.getId();
     }
 
     @PostMapping("/{id}/delete")
@@ -118,4 +138,6 @@ public class ProjectController {
         Path filepath = Paths.get(templates_dir.toString(), file.getOriginalFilename());
         file.transferTo(filepath);
     }
+
+
 }

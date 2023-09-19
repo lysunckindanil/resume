@@ -26,25 +26,15 @@ public class ImageController {
     private ResponseEntity<?> getImageById(@PathVariable Long id) {
         Image image = imageRepository.findById(id).orElse(null);
         assert image != null;
-        return ResponseEntity.ok()
-                .header("fileName", image.getOriginalFileName())
-                .contentType(MediaType.valueOf(image.getContentType()))
-                .contentLength(image.getSize())
-                .body(new InputStreamResource(new ByteArrayInputStream(image.getBytes())));
+        return ResponseEntity.ok().header("fileName", image.getOriginalFileName()).contentType(MediaType.valueOf(image.getContentType())).contentLength(image.getSize()).body(new InputStreamResource(new ByteArrayInputStream(image.getBytes())));
     }
 
     @GetMapping("/name/{name}")
     private ResponseEntity<?> getImageByName(@PathVariable String name) {
         Optional<Image> optionalImage = imageRepository.findAll().stream().filter(x -> x.getName() != null).filter(x -> x.getName().equals(name)).findAny();
-
-
         if (optionalImage.isPresent()) {
             Image image = optionalImage.get();
-            return ResponseEntity.ok()
-                    .header("fileName", image.getOriginalFileName())
-                    .contentType(MediaType.valueOf(image.getContentType()))
-                    .contentLength(image.getSize())
-                    .body(new InputStreamResource(new ByteArrayInputStream(image.getBytes())));
+            return ResponseEntity.ok().header("fileName", image.getOriginalFileName()).contentType(MediaType.valueOf(image.getContentType())).contentLength(image.getSize()).body(new InputStreamResource(new ByteArrayInputStream(image.getBytes())));
         } else {
             return ResponseEntity.badRequest().body(new Object());
         }

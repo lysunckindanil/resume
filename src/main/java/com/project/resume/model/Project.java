@@ -9,10 +9,6 @@ import lombok.Setter;
 @Setter
 @Table(name = "projects")
 public class Project implements Comparable<Project> {
-    public Project() {
-        setMain(true);
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;

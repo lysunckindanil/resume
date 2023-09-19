@@ -15,27 +15,34 @@
         <form th:method="POST" th:action="@{/projects/add}" th:object="${project}"
               enctype="multipart/form-data">
             <h1 class="display-5 text-center">New project form</h1>
+
+            <!--            Project Title-->
             <div class="form-group mb-3">
                 <label for="title">Title</label>
                 <input th:field="*{title}" type="text" class="form-control" id="title"
-                       placeholder="Enter label">
+                       placeholder="Enter label" required>
             </div>
+
+            <!--            Project Description-->
             <div class="form-group mb-3">
                 <label for="description">Description</label>
-                <input th:field="*{description}" type="text" class="form-control" id="description"
+                <input th:field="*{description}" class="form-control" type="text" id="description"
                        placeholder="Enter description">
             </div>
 
+            <!--            Project Image-->
+            <div class="form-group mb-3">
+                <label for="image" class="form-label">Title image</label>
+                <input class="form-control" name="image_file" type="file" id="image" required>
+            </div>
+
+            <!--            Project page-->
             <div class="form-group mb-3">
                 <label for="page" class="form-label">Page html</label>
-                <input class="form-control" name="page_file" type="file" id="page">
+                <input class="form-control" name="page_file" type="file" id="page" required>
             </div>
 
-            <div class="form-group mb-3">
-                <label for="image" class="form-label">Add image</label>
-                <input class="form-control" name="image_file" type="file" id="image">
-            </div>
-
+            <!--            Is project main-->
             <div class="form-group mb-3">
                 <input th:field="*{main}" class="form-check-input" type="checkbox" id="flexCheckDefault">
                 <label class="form-check-label" for="flexCheckDefault">
