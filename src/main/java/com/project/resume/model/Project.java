@@ -1,32 +1,31 @@
 package com.project.resume.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
+@Table(name = "projects")
 public class Project implements Comparable<Project> {
     public Project() {
-        //default
         setMain(true);
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
     private boolean main;
 
     private String title;
 
     private String description;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Image image;
 
-    private String img;
-
-    private String file_html;
-
+    private String page;
 
     @Override
     public int compareTo(Project o) {

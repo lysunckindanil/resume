@@ -13,7 +13,6 @@
     <div class="container">
         <div class="row">
             <div class="col">
-
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a th:href="@{/projects}">Проекты</a></li>
@@ -21,8 +20,9 @@
                     </ol>
                 </nav>
             </div>
+
             <div th:if="${user=='admin'}" class="col text-end">
-                <div class="dropdown">
+                <div class="dropdown mb-1">
                     <a class="btn btn-secondary dropdown-toggle"
                        role="button" data-bs-toggle="dropdown"
                        aria-expanded="false">

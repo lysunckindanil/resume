@@ -12,28 +12,42 @@
 
 <main class="p-4" style="background-color: #ECECEC">
     <div class="container">
-        <h1 class="display-5 mb-4">Пару слов обо мне</h1>
-
         <!--        about me and photo-->
-        <div class="row g-0 overflow-hidden flex-md-row mb-4  h-md-250 position-relative">
-            <div class="col p-4 d-flex flex-column position-static bg-white">
-                <h1 class="h1">Лысункин Данила</h1>
+        <div class="row g-0 overflow-hidden flex-md-row h-md-250 position-relative">
+            <div class="col px-5 py-4 d-flex flex-column position-static bg-white">
+                <h2 class="display-5 mb-3">Личная информация</h2>
+                <div class="mx-2">
+                    <p>Имя: Лысункин Данила</p>
+                    <p>Дата рождения: 10.12.2003</p>
+                    <p>Email: lysunckin.danil@yandex.ru</p>
+                    <p>Телефон: +7-963-453-38-13</p>
+                </div>
+                <h2 class="display-5 mb-3">Образование</h2>
+                <div class="mx-2">
+                    <p>Тюменский государственный университет</p>
+                    <p>Институт математики и компьютерных наук</p>
+                    <p>Направление "Компьютерная безопасность"</p>
+                </div>
             </div>
             <div class="col-auto d-none d-lg-block">
-                <img class="bd-placeholder-img" height="400" alt="my photo"
-                     src="https://i.pinimg.com/736x/38/4a/b2/384ab250a74e3c46bb6e842ab2d8b6a0.jpg">
+                <img class="bd-placeholder-img" height="500" alt="my photo"
+                     th:src="@{images/name/bio}">
             </div>
         </div>
 
 
-        <!--other information-->
-        <div class="p-4 p-md-5 mb-4 text-body-emphasis bg-white">
-            <div class="col-lg-6 px-0">
-                <h1 class="display-4 fst-italic">Title of a longer featured blog post</h1>
-                <p class="lead my-3">Multiple lines of text that form the lede, informing new readers quickly and
-                    efficiently about what’s most interesting in this post’s contents.</p>
-                <p class="lead mb-0"><a href="#" class="text-body-emphasis fw-bold">Continue reading...</a></p>
-            </div>
+        <!--        other information-->
+        <div class="px-5 py-4" style="background-color: #C2C9D3">
+            <h3 class="display-5 mb-3">Навыки</h3>
+            <p>Дружелюбный</p>
+            <p>Терпеливый</p>
+        </div>
+
+        <div class="px-5 py-4  bg-white">
+            <h3 class="display-5 mb-3">Хобби</h3>
+            <p>Спорт</p>
+            <p>Чтение</p>
+            <p>Английский</p>
         </div>
 
     </div>

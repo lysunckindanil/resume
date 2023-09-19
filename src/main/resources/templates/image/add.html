@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add image to repository</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+</head>
+<body>
+<header th:insert="~{fragments/main_page :: header(active='projects')}"></header>
+<main class="p-4" style="background-color: #ECECEC">
+    <div class="container bg-white p-4">
+        <form th:method="POST" th:action="@{/images/add}"
+              enctype="multipart/form-data">
+            <h1 class="display-5 text-center">Image repository</h1>
+
+            <div class="form-group mb-3">
+                <label for="title">Image name</label>
+                <input name="image_name" type="text" class="form-control" id="title" placeholder="Enter label">
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="image" class="form-label">Image file</label>
+                <input class="form-control" name="image_file" type="file" id="image">
+            </div>
+
+            <button type="submit" class="btn btn-primary m-2">Add image to repository</button>
+        </form>
+
+    </div>
+</main>
+<footer th:insert="~{fragments/main_page :: footer}"></footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+</body>
+</html>

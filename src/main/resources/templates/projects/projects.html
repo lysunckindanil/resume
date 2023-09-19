@@ -16,7 +16,7 @@
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-1">
             <div class="col" th:each="project : ${main_projects}">
                 <div class="card shadow-sm h-100">
-                    <img class="card-img-top" th:src="${project.getImg()}"
+                    <img class="card-img-top" th:src="@{/images/{id} (id = ${project.getImage().getId()})}"
                          th:alt="${project.getTitle()}">
                     <div class="card-body">
                         <h4 class="card-title" th:text="${project.getTitle()}"></h4>
@@ -34,7 +34,7 @@
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-1">
             <div class="col" th:each="project : ${other_projects}">
                 <div class="card shadow-sm h-100">
-                    <img class="card-img-top" th:src="${project.getImg()}"
+                    <img class="card-img-top" th:src="@{/images/{id} (id = ${project.getImage().getId()})}"
                          th:alt="${project.getTitle()}">
                     <div class="card-body">
                         <h4 class="card-title" th:text="${project.getTitle()}"></h4>
