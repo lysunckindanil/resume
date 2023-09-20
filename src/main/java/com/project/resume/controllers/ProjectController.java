@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +27,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class ProjectController {
-    public static final String PROJECT_CUSTOM_HTML = "projects/pages/";
+    public static final String PROJECT_FRAGMENT_PATH = "projects/pages/";
     private final ProjectRepository projectRepository;
 
 
@@ -41,8 +42,11 @@ public class ProjectController {
 
     @GetMapping("/{id}")
     private String project(@PathVariable("id") int id, Principal principal, Model model) {
+        // if projects doesn't exist by id, then sends to error page
         if (projectRepository.findById(id).isPresent()) {
             Project project = projectRepository.findById(id).get();
+            // Project fragment for thymeleaf with path and name
+            // Fragment file name without extension should be the same as fragment name!
             @Getter
             @Setter
             class Fragment {
@@ -50,35 +54,39 @@ public class ProjectController {
                 public String name;
             }
             Fragment fragment = new Fragment();
-            fragment.setName(project.getPage().replace(".html", ""));
-            fragment.setPath(PROJECT_CUSTOM_HTML + fragment.name);
+            fragment.setName(FilenameUtils.removeExtension(project.getPage()));
+            fragment.setPath(PROJECT_FRAGMENT_PATH + fragment.name);
+
             model.addAttribute("fragment", fragment);
             model.addAttribute("project", project);
             model.addAttribute("user", principal == null ? "" : principal.getName());
 
             return "projects/project";
         }
-        return "redirect:/projects";
+        return "service/error";
     }
 
     @GetMapping("/add")
     String addProject(Model model) {
+        // returns project creation form with model attribute
         model.addAttribute("project", new Project());
         return "projects/new";
     }
 
     @PostMapping("/add")
     private String addProjectPost(@ModelAttribute Project project, @RequestParam(value = "page_file") MultipartFile page_file, @RequestParam(value = "image_file") MultipartFile image_file) {
+
         try {
+            // this method copies received file to PROJECT_FRAGMENT_PATH
             saveHtmlPage(page_file);
             project.setPage(page_file.getOriginalFilename());
         } catch (IOException e) {
             log.error("Unable to transfer html page");
         }
 
-
         try {
             Image image = ImageController.toImageEntity(image_file);
+            image.setName("Project: " + project.getTitle());
             project.setImage(image);
         } catch (IOException e) {
             log.error("Unable to add image file");
@@ -88,42 +96,48 @@ public class ProjectController {
         return "redirect:/projects/" + project.getId();
     }
 
-
     @GetMapping("/{id}/edit")
     private String editProject(@PathVariable("id") int id, Model model) {
-        model.addAttribute("project", projectRepository.findById(id).orElse(null));
-        return "projects/edit";
+        if (projectRepository.findById(id).isPresent()) {
+            model.addAttribute("project", projectRepository.findById(id).get());
+            return "projects/edit";
+        }
+        return "service/error";
     }
 
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
     @PostMapping("/{id}/edit")
     private String editProjectPost(@ModelAttribute Project project, @PathVariable("id") int id, @RequestParam(value = "page_file", required = false) MultipartFile page_file, @RequestParam(value = "image_file", required = false) MultipartFile image_file) {
-        Project original_project = projectRepository.findById(id).get();
+        if (projectRepository.findById(id).isPresent()) {
+            Project original_project = projectRepository.findById(id).get();
 
-        if (!page_file.isEmpty()) {
-            try {
-                saveHtmlPage(page_file);
-                original_project.setPage(page_file.getOriginalFilename());
-            } catch (IOException e) {
-                log.error("Unable to transfer html page");
+            // changes project's page html only if file was passed to the method
+            if (!page_file.isEmpty()) {
+                try {
+                    saveHtmlPage(page_file);
+                    original_project.setPage(page_file.getOriginalFilename());
+                } catch (IOException e) {
+                    log.error("Unable to transfer html page");
+                }
             }
-        }
 
-        if (!image_file.isEmpty()) {
-            try {
-                Image image = ImageController.toImageEntity(image_file);
-                original_project.setImage(image);
-            } catch (IOException e) {
-                log.error("Unable to add image file");
+            // changes project's title image only if file was passed to the method
+            if (!image_file.isEmpty()) {
+                try {
+                    Image image = ImageController.toImageEntity(image_file);
+                    original_project.setImage(image);
+                } catch (IOException e) {
+                    log.error("Unable to add image file");
+                }
             }
+
+            original_project.setTitle(project.getTitle());
+            original_project.setDescription(project.getDescription());
+            original_project.setMain(project.isMain());
+
+            projectRepository.save(original_project);
+            return "redirect:/projects/" + project.getId();
         }
-
-        original_project.setTitle(project.getTitle());
-        original_project.setDescription(project.getDescription());
-        original_project.setMain(project.isMain());
-
-        projectRepository.save(original_project);
-        return "redirect:/projects/" + project.getId();
+        return "service/error";
     }
 
     @PostMapping("/{id}/delete")
@@ -132,9 +146,8 @@ public class ProjectController {
         return "redirect:/projects";
     }
 
-
     private void saveHtmlPage(MultipartFile file) throws IOException {
-        Path templates_dir = Paths.get("src" + File.separator + "main" + File.separator + "resources" + File.separator + "templates" + File.separator + ProjectController.PROJECT_CUSTOM_HTML);
+        Path templates_dir = Paths.get("src" + File.separator + "main" + File.separator + "resources" + File.separator + "templates" + File.separator + ProjectController.PROJECT_FRAGMENT_PATH);
         Path filepath = Paths.get(templates_dir.toString(), file.getOriginalFilename());
         file.transferTo(filepath);
     }

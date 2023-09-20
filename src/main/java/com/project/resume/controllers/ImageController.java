@@ -2,12 +2,14 @@ package com.project.resume.controllers;
 
 import com.project.resume.model.Image;
 import com.project.resume.repo.ImageRepository;
+import com.project.resume.repo.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +23,7 @@ import java.util.Optional;
 @Slf4j
 public class ImageController {
     private final ImageRepository imageRepository;
+    private final ProjectRepository projectRepository;
 
     @GetMapping("/{id}")
     private ResponseEntity<?> getImageById(@PathVariable Long id) {
@@ -41,7 +44,9 @@ public class ImageController {
     }
 
     @GetMapping("/add")
-    private String addImage() {
+    private String addImage(Model model) {
+        model.addAttribute("image_list", imageRepository.findAll());
+        model.addAttribute("project_list", projectRepository.findAll());
         return "image/add";
     }
 
@@ -55,6 +60,13 @@ public class ImageController {
             log.error("Unable to add image file to repository");
         }
         return "redirect:/";
+    }
+
+    @PostMapping("{id}/delete")
+    private String deleteImagePost(@PathVariable long id) {
+        if (projectRepository.findAll().stream().noneMatch(x -> x.getImage().getId() == id))
+            imageRepository.deleteById(id);
+        return "redirect:/images/add";
     }
 
     public static Image toImageEntity(MultipartFile file) throws IOException {
