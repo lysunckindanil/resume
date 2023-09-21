@@ -43,30 +43,31 @@ public class ImageController {
         }
     }
 
-    @GetMapping("/add")
+    @GetMapping("/repository")
     private String addImage(Model model) {
         model.addAttribute("image_list", imageRepository.findAll());
         model.addAttribute("project_list", projectRepository.findAll());
-        return "image/add";
+        return "image/repository";
     }
 
     @PostMapping("/add")
-    private String addImagePost(@RequestAttribute(value = "image_file") MultipartFile image_file, @RequestParam(value = "image_name") String name) {
+    private String addImagePost(@RequestAttribute(value = "image_file") MultipartFile image_file, @RequestParam(value = "image_name") String name, @RequestParam(value = "image_description") String description) {
         try {
             Image image = toImageEntity(image_file);
             image.setName(name);
+            image.setDescription(description);
             imageRepository.save(image);
         } catch (IOException e) {
             log.error("Unable to add image file to repository");
         }
-        return "redirect:/";
+        return "redirect:/images/repository";
     }
 
     @PostMapping("{id}/delete")
     private String deleteImagePost(@PathVariable long id) {
         if (projectRepository.findAll().stream().noneMatch(x -> x.getImage().getId() == id))
             imageRepository.deleteById(id);
-        return "redirect:/images/add";
+        return "redirect:/images/repository";
     }
 
     public static Image toImageEntity(MultipartFile file) throws IOException {

@@ -86,7 +86,6 @@ public class ProjectController {
 
         try {
             Image image = ImageController.toImageEntity(image_file);
-            image.setName("Project: " + project.getTitle());
             project.setImage(image);
         } catch (IOException e) {
             log.error("Unable to add image file");

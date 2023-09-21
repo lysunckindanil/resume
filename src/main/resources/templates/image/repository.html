@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Add image to repository</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image repository</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
@@ -23,6 +24,12 @@
             </div>
 
             <div class="form-group mb-3">
+                <label for="description">Image description</label>
+                <input name="image_description" type="text" class="form-control" id="description"
+                       placeholder="Enter description">
+            </div>
+
+            <div class="form-group mb-3">
                 <label for="image" class="form-label">Image file</label>
                 <input class="form-control" name="image_file" type="file" id="image" required>
             </div>
@@ -36,6 +43,7 @@
             <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Name</th>
+                <th scope="col">Description</th>
                 <th scope="col">File name</th>
                 <th scope="col">Action</th>
             </tr>
@@ -44,6 +52,7 @@
             <tr th:each="image: ${image_list}">
                 <td><a th:href="@{/images/{id} (id = ${image.getId()})}" th:text="${image.getId()}">ID</a></td>
                 <td th:text="${image.getName()}">Name</td>
+                <td th:text="${image.getDescription()}">Description</td>
                 <td th:text="${image.getOriginalFileName()}">File name</td>
                 <td>
                     <form th:method="post" th:action="@{/images/{id}/delete (id=${image.getId()})}">
