@@ -11,48 +11,52 @@
 <body>
 
 <header th:insert="~{fragments/main_page :: header(active='projects')}"></header>
-<main class="p-4" style="background-color: #ECECEC">
-    <div class="container bg-white p-4">
-        <form th:method="POST" th:action="@{/projects/add}" th:object="${project}"
-              enctype="multipart/form-data">
-            <h1 class="display-5 text-center">New project form</h1>
+<main class="p-2 p-md-4" style="background-color: #ECECEC">
+    <div class="container">
+        <div class="p-4 p-md-5 mb-2 mb-md-3 bg-white">
+            <!--            form-->
+            <form th:method="POST" th:action="@{/projects/add}" th:object="${project}"
+                  enctype="multipart/form-data">
+                <h1 class="display-5 text-center">New project form</h1>
 
-            <!--            Project Title-->
-            <div class="form-group mb-3">
-                <label for="title">Title</label>
-                <input th:field="*{title}" type="text" class="form-control" id="title"
-                       placeholder="Enter label" required>
-            </div>
+                <!--            Project Title-->
+                <div class="form-group mb-3">
+                    <label for="title">Title</label>
+                    <input th:field="*{title}" type="text" class="form-control" id="title"
+                           placeholder="Enter label" required>
+                </div>
 
-            <!--            Project Description-->
-            <div class="form-group mb-3">
-                <label for="description">Description</label>
-                <input th:field="*{description}" class="form-control" type="text" id="description"
-                       placeholder="Enter description">
-            </div>
+                <!--            Project Description-->
+                <div class="form-group mb-3">
+                    <label for="description">Description</label>
+                    <input th:field="*{description}" class="form-control" type="text" id="description"
+                           placeholder="Enter description">
+                </div>
 
-            <!--            Project Image-->
-            <div class="form-group mb-3">
-                <label for="image" class="form-label">Title image</label>
-                <input class="form-control" name="image_file" type="file" id="image" required>
-            </div>
+                <!--            Project Image-->
+                <div class="form-group mb-3">
+                    <label for="image" class="form-label">Title image</label>
+                    <input class="form-control" name="image_file" type="file" id="image" required>
+                </div>
 
-            <!--            Project page-->
-            <div class="form-group mb-3">
-                <label for="page" class="form-label">Page html</label>
-                <input class="form-control" name="page_file" type="file" id="page" required>
-            </div>
+                <!--            Project page-->
+                <div class="form-group mb-3">
+                    <label for="page" class="form-label">Page html</label>
+                    <input class="form-control" name="page_file" type="file" id="page" required>
+                </div>
 
-            <!--            Is project main-->
-            <div class="form-group mb-3">
-                <input th:field="*{main}" class="form-check-input" type="checkbox" id="flexCheckDefault">
-                <label class="form-check-label" for="flexCheckDefault">
-                    Should be main project?
-                </label>
-            </div>
-
-            <button type="submit" class="btn btn-primary mx-3 my-2">Create project</button>
-        </form>
+                <!--            Is project main-->
+                <div class="form-group mb-3">
+                    <input th:field="*{main}" class="form-check-input" type="checkbox" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Should be main project?
+                    </label>
+                </div>
+                <div class="text-md-start text-center">
+                    <button type="submit" class="btn btn-primary m-md-2">Create project</button>
+                </div>
+            </form>
+        </div>
     </div>
 </main>
 <footer th:insert="~{fragments/main_page :: footer}"></footer>

@@ -11,8 +11,4 @@ public class AboutController {
         return "about/about_page";
     }
 
-    @GetMapping("/test")
-    public String test() {
-        return "test";
-    }
 }

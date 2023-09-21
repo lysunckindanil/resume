@@ -11,11 +11,11 @@
 <div th:replace="~{fragments/main_page :: header(active='about')}"></div>
 
 
-<main class="p-4" style="background-color: #ECECEC">
+<main class="p-2 p-md-4" style="background-color: #ECECEC">
     <div class="container">
         <!--        about me and photo-->
         <div class="row g-0 overflow-hidden flex-md-row h-md-250 position-relative">
-            <div class="col px-5 py-4 d-flex flex-column position-static bg-white">
+            <div class="col px-md-5 py-md-4 p-3 d-flex flex-column position-static bg-white">
                 <h2 class="display-5 mb-3">Личная информация</h2>
                 <div class="mx-2">
                     <p>Имя: Лысункин Данила Алексеевич</p>
@@ -38,17 +38,21 @@
 
 
         <!--        English-->
-        <div class="px-5 py-4" style="background-color: #C2C9D3">
+        <div class="px-md-5 py-md-4 p-3" style="background-color: #C2C9D3">
             <h3 class="display-5 mb-3">Английский</h3>
-            <p>Английский язык на уровне В2</p>
-            <p>Свободное чтение документации, художественной литературы</p>
+            <div class="mx-2">
+                <p>Английский язык на уровне В2</p>
+                <p>Свободное чтение документации, художественной литературы</p>
+            </div>
         </div>
 
         <!--        hobby-->
-        <div class="px-5 py-4 bg-white">
+        <div class="px-md-5 py-md-4 p-3 bg-white">
             <h3 class="display-5 mb-3">Хобби</h3>
-            <p>Спорт</p>
-            <p>Чтение</p>
+            <div class="mx-2">
+                <p>Спорт</p>
+                <p>Чтение</p>
+            </div>
         </div>
 
     </div>

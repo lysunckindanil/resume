@@ -10,7 +10,7 @@
 </head>
 <body>
 <header th:insert="~{fragments/main_page :: header(active='projects')}"></header>
-<main class="p-4" style="background-color: #ECECEC">
+<main class="p-2 p-md-4" style="background-color: #ECECEC">
     <div class="container">
         <div class="row">
             <div class="col">
@@ -22,7 +22,7 @@
                 </nav>
             </div>
 
-            <div th:if="${user=='admin'}" class="col text-end">
+            <div th:if="${user=='admin'}" class="col-md text-md-end text-center">
                 <div class="dropdown mb-1">
                     <a class="btn btn-secondary dropdown-toggle"
                        role="button" data-bs-toggle="dropdown"
@@ -45,8 +45,7 @@
         </div>
     </div>
 
-    <div
-         th:replace="~{${fragment.path} :: ${fragment.name}}"></div>
+    <div th:replace="~{${fragment.path} :: ${fragment.name}}"></div>
 
 
 </main>
