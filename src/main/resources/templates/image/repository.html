@@ -58,9 +58,33 @@
                         <td th:text="${image.getDescription()}">Description</td>
                         <td th:text="${image.getOriginalFileName()}">File name</td>
                         <td>
-                            <form th:method="post" th:action="@{/images/{id}/delete (id=${image.getId()})}">
-                                <button class="btn" type="submit">Delete</button>
-                            </form>
+
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="'#'+${image.getId()}">
+                                Delete image
+                            </button>
+
+
+                            <!-- Modal -->
+                            <div class="modal" th:id="${image.getId()}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Delete [[${image.getOriginalFileName()}]]?</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Are you sure, that you want to delete image?</p>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <form th:method="post" th:action="@{/images/{id}/delete (id=${image.getId()})}">
+                                                <button class="btn btn-primary" type="submit">Delete</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                     </tbody>
@@ -89,6 +113,7 @@
         </div>
     </div>
 </main>
+
 <footer th:insert="~{fragments/main_page :: footer}"></footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"

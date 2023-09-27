@@ -58,29 +58,30 @@
 
     <!--    video-->
     <div class="ratio ratio-16x9">
-        <iframe src="https://www.youtube.com/embed/_iYvlSMgUGE?si=4l1smInvkrhhvLaE"
+        <iframe src="https://www.youtube.com/embed/lMynVxGc7pM?si=u4-InBdQ-8XoXYxA" title="YouTube video player"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowfullscreen></iframe>
     </div>
 
     <!--    Backend-->
     <div class="p-4 text-body-emphasis bg-white">
         <h3>Backend</h3>
-        <p>Потоки:</p>
+        <p><strong>Потоки:</strong></p>
         <p>Map будем называть словарь, в котором хранятся потоки с ключом chat id пользователя.
             В целях потоковой безопасности поток сам знает, когда ему завершиться, а это не происходит из вне.</p>
-        <p>Старт</p>
+        <p><strong>Старт</strong></p>
         <ul>
             <li>Когда пользователь запускает бота (команда /run), то в Map добавляется новый поток с ключом chat id
                 этого
                 пользователя.
             </li>
         </ul>
-        <p>Работа</p>
+        <p><strong>Работа</strong></p>
         <ul>
             <li>В каждом потоке цикл с периодом, который задал пользователь.</li>
             <li>Цикл в потоке работает пока в Map есть ключ chat id пользователя.</li>
         </ul>
-        <p>Стоп</p>
+        <p><strong>Стоп</strong></p>
         <ul>
             <li>Когда пользователь останавливает бота (команда /stop), то поток с ключом chat id пользователя из Map
                 удаляется.

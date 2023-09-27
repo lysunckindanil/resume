@@ -27,17 +27,18 @@
                     <a class="btn btn-secondary dropdown-toggle"
                        role="button" data-bs-toggle="dropdown"
                        aria-expanded="false">
-                        Редактировать
+                        Edit project
                     </a>
 
                     <ul class="dropdown-menu">
-                        <li><a th:href="@{/projects/{id}/edit(id=${project.getId()})}" class="dropdown-item"
-                               href="#">Редактировать</a></li>
                         <li>
-                            <form th:method="post"
-                                  th:action="@{/projects/{id}/delete(id=${project.getId()})}">
-                                <input type="submit" class="dropdown-item d-inline" value="Удалить"/>
-                            </form>
+                            <a th:href="@{/projects/{id}/edit(id=${project.getId()})}" class="dropdown-item"
+                               href="#">Edit</a></li>
+                        <li>
+                            <button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                    data-bs-target="#projectDeleteModal">
+                                Delete
+                            </button>
                         </li>
                     </ul>
                 </div>
@@ -45,6 +46,34 @@
         </div>
     </div>
 
+
+    <!-- Delete Project Modal -->
+    <div class="modal" id="projectDeleteModal" data-bs-backdrop="static"
+         data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Delete
+                        [[${project.getTitle()}]]?</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure, that you want to delete project?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <form th:method="post"
+                          th:action="@{/projects/{id}/delete(id=${project.getId()})}">
+                        <button class="btn btn-primary" type="submit">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <div th:replace="~{${fragment.path} :: ${fragment.name}}"></div>
 
 
