@@ -13,7 +13,7 @@
                 </a>
             </div>
 
-            <div th:replace="~{fragments/main_page :: ${active}}"></div>
+            <div th:replace="~{fragments/header :: ${active}}"></div>
         </header>
     </div>
 </div>
@@ -46,15 +46,3 @@
 </nav>
 
 
-<div th:fragment="footer" style="background-color: #C2C9D3">
-    <div class="container">
-        <footer class="py-5 text-center text-body-secondary">
-            <p>Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a
-                    href="https://twitter.com/mdo">@mdo</a>.
-            </p>
-            <p class="mb-0">
-                <a href="#">Back to top</a>
-            </p>
-        </footer>
-    </div>
-</div>

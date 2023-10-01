@@ -27,7 +27,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class ProjectController {
-    public static final String PROJECT_FRAGMENT_PATH = "projects/pages/";
+    public static final String PROJECT_FRAGMENT_PATH = "projects" + File.separator + "pages" + File.separator;
     private final ProjectRepository projectRepository;
 
 
@@ -150,6 +150,4 @@ public class ProjectController {
         Path filepath = Paths.get(templates_dir.toString(), file.getOriginalFilename());
         file.transferTo(filepath);
     }
-
-
 }
