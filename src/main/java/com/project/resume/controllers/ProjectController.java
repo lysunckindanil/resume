@@ -33,8 +33,8 @@ public class ProjectController {
     @GetMapping()
     private String projects(Principal principal, Model model) {
         List<Project> projects = projectRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
-        model.addAttribute("main_projects", projects.stream().filter(Project::isMain).toList());
-        model.addAttribute("other_projects", projects.stream().filter(x -> !x.isMain()).toList());
+        model.addAttribute("main_projects", projects.stream().filter(Project::isMain).sorted().toList());
+        model.addAttribute("other_projects", projects.stream().filter(x -> !x.isMain()).sorted().toList());
         model.addAttribute("user", principal == null ? "" : principal.getName());
         return "projects/projects";
     }
@@ -122,9 +122,10 @@ public class ProjectController {
 
             // changes project's title image only if file was passed to the method
             if (!image_file.isEmpty()) {
+
                 try {
                     image_file.transferTo(Path.of(ImageController.getImageStaticDir() + image_file.getOriginalFilename()));
-                    project.setImage(image_file.getOriginalFilename());
+                    original_project.setImage(image_file.getOriginalFilename());
                 } catch (IOException e) {
                     log.error("Unable to add image file to static files dir");
                     log.error(e.toString());
@@ -134,6 +135,7 @@ public class ProjectController {
             original_project.setTitle(project.getTitle());
             original_project.setDescription(project.getDescription());
             original_project.setMain(project.isMain());
+            original_project.setOrder(project.getOrder());
 
             projectRepository.save(original_project);
             return "redirect:/projects/" + project.getId();
