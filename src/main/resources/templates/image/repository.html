@@ -14,9 +14,9 @@
     <div class="container">
 
         <div class="p-4 p-md-5 mb-2 mb-md-3 bg-white">
-            <form th:method="POST" th:action="@{/images/add}"
+            <form th:method="POST" th:action="@{/images/repository/add}"
                   enctype="multipart/form-data">
-                <h1 class="display-5 text-center">Image repository</h1>
+                <h1 class="display-6 text-center">Add image to database</h1>
 
                 <div class="form-group mb-3">
                     <label for="title">Image name</label>
@@ -39,6 +39,21 @@
                 </div>
             </form>
 
+            <h1 class="display-6 text-center">Add image to static folder</h1>
+            <form th:method="POST" th:action="@{/images/add}"
+                  enctype="multipart/form-data">
+
+                <div class="form-group mb-3">
+                    <label for="image1" class="form-label">Image file</label>
+                    <input class="form-control" name="image_file" type="file" id="image1" required>
+                </div>
+
+                <div class="text-md-start text-center">
+                    <button type="submit" class="btn btn-primary m-md-2">Add image to repository</button>
+                </div>
+            </form>
+
+            <h1 class="display-6 text-center">Image database info</h1>
             <!--        list of images-->
             <div class="table-responsive">
                 <table class="my-3 table table-bordered">
@@ -53,7 +68,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="image: ${image_list}">
-                        <td><a th:href="@{/images/{id} (id = ${image.getId()})}" th:text="${image.getId()}">ID</a></td>
+                        <td><a th:href="@{/images/repository/{id} (id = ${image.getId()})}" th:text="${image.getId()}">ID</a></td>
                         <td th:text="${image.getName()}">Name</td>
                         <td th:text="${image.getDescription()}">Description</td>
                         <td th:text="${image.getOriginalFileName()}">File name</td>
@@ -62,26 +77,6 @@
                                 <button class="btn" type="submit">Delete</button>
                             </form>
                         </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!--        list of projects-->
-            <div class="table-responsive">
-                <table class="my-3 table table-bordered table-responsive">
-                    <thead class="table-light ">
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Image ID</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="project: ${project_list}">
-                        <td th:text="${project.getId()}">ID</td>
-                        <td th:text="${project.getTitle()}">Name</td>
-                        <td th:text="${project.getImage().getId()}">Image id</td>
                     </tr>
                     </tbody>
                 </table>

@@ -1,6 +1,5 @@
 package com.project.resume.controllers;
 
-import com.project.resume.model.Image;
 import com.project.resume.model.Project;
 import com.project.resume.repo.ProjectRepository;
 import lombok.Getter;
@@ -85,11 +84,13 @@ public class ProjectController {
         }
 
         try {
-            Image image = ImageController.toImageEntity(image_file);
-            project.setImage(image);
+            image_file.transferTo(Path.of(ImageController.getImageStaticDir() + image_file.getOriginalFilename()));
+            project.setImage(image_file.getOriginalFilename());
         } catch (IOException e) {
-            log.error("Unable to add image file");
+            log.error("Unable to add image file to static files dir");
+            log.error(e.toString());
         }
+
 
         projectRepository.save(project);
         return "redirect:/projects/" + project.getId();
@@ -122,10 +123,11 @@ public class ProjectController {
             // changes project's title image only if file was passed to the method
             if (!image_file.isEmpty()) {
                 try {
-                    Image image = ImageController.toImageEntity(image_file);
-                    original_project.setImage(image);
+                    image_file.transferTo(Path.of(ImageController.getImageStaticDir() + image_file.getOriginalFilename()));
+                    project.setImage(image_file.getOriginalFilename());
                 } catch (IOException e) {
-                    log.error("Unable to add image file");
+                    log.error("Unable to add image file to static files dir");
+                    log.error(e.toString());
                 }
             }
 

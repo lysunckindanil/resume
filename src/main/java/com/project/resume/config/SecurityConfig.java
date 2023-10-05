@@ -20,15 +20,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain customSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests()
-                .requestMatchers("/images/*/delete", "/images/repository", "/projects/*/edit",
+                .requestMatchers("/images/*/delete", "/images/repository", "/images/repository/add", "/images/add", "/projects/*/edit",
                         "/projects/*/delete", "/projects/add")
                 .authenticated()
                 .anyRequest()
                 .permitAll()
                 .and()
-                .formLogin()
-                .and()
-                .logout().logoutSuccessUrl("/");
+                .formLogin();
 
         return http.build();
     }

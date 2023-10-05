@@ -2,7 +2,6 @@ package com.project.resume.controllers;
 
 import com.project.resume.model.Image;
 import com.project.resume.repo.ImageRepository;
-import com.project.resume.repo.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
@@ -14,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Optional;
 
 @Controller
@@ -23,17 +24,17 @@ import java.util.Optional;
 @Slf4j
 public class ImageController {
     private final ImageRepository imageRepository;
-    private final ProjectRepository projectRepository;
+    private static final String STATIC_DIR = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static";
 
-    @GetMapping("/{id}")
-    private ResponseEntity<?> getImageById(@PathVariable Long id) {
+    @GetMapping("/repository/{id}")
+    private ResponseEntity<?> getDatabaseImageById(@PathVariable Long id) {
         Image image = imageRepository.findById(id).orElse(null);
         assert image != null;
         return ResponseEntity.ok().header("fileName", image.getOriginalFileName()).contentType(MediaType.valueOf(image.getContentType())).contentLength(image.getSize()).body(new InputStreamResource(new ByteArrayInputStream(image.getBytes())));
     }
 
-    @GetMapping("/name/{name}")
-    private ResponseEntity<?> getImageByName(@PathVariable String name) {
+    @GetMapping("/repository/name/{name}")
+    private ResponseEntity<?> getDatabaseImageByName(@PathVariable String name) {
         Optional<Image> optionalImage = imageRepository.findAll().stream().filter(x -> x.getName() != null).filter(x -> x.getName().equals(name)).findAny();
         if (optionalImage.isPresent()) {
             Image image = optionalImage.get();
@@ -44,14 +45,13 @@ public class ImageController {
     }
 
     @GetMapping("/repository")
-    private String addImage(Model model) {
+    private String index(Model model) {
         model.addAttribute("image_list", imageRepository.findAll());
-        model.addAttribute("project_list", projectRepository.findAll());
         return "image/repository";
     }
 
-    @PostMapping("/add")
-    private String addImagePost(@RequestAttribute(value = "image_file") MultipartFile image_file, @RequestParam(value = "image_name") String name, @RequestParam(value = "image_description") String description) {
+    @PostMapping("/repository/add")
+    private String addDatabaseImagePost(@RequestAttribute(value = "image_file") MultipartFile image_file, @RequestParam(value = "image_name") String name, @RequestParam(value = "image_description") String description) {
         try {
             Image image = toImageEntity(image_file);
             image.setName(name);
@@ -59,14 +59,25 @@ public class ImageController {
             imageRepository.save(image);
         } catch (IOException e) {
             log.error("Unable to add image file to repository");
+            log.error(e.toString());
+        }
+        return "redirect:/images/repository";
+    }
+
+    @PostMapping("/add")
+    private String addStaticImagePost(@RequestAttribute(value = "image_file", required = false) MultipartFile image_file) {
+        try {
+            image_file.transferTo(Path.of(STATIC_DIR + File.separator + "images" + File.separator + image_file.getOriginalFilename()));
+        } catch (IOException e) {
+            log.error("Unable to add image file to static files dir");
+            log.error(e.toString());
         }
         return "redirect:/images/repository";
     }
 
     @PostMapping("{id}/delete")
-    private String deleteImagePost(@PathVariable long id) {
-        if (projectRepository.findAll().stream().noneMatch(x -> x.getImage().getId() == id))
-            imageRepository.deleteById(id);
+    private String deleteDatabaseImagePost(@PathVariable long id) {
+        imageRepository.deleteById(id);
         return "redirect:/images/repository";
     }
 
@@ -77,6 +88,11 @@ public class ImageController {
         image.setSize(file.getSize());
         image.setBytes(file.getBytes());
         return image;
+    }
+
+
+    public static String getImageStaticDir() {
+        return STATIC_DIR + File.separator + "images" + File.separator;
     }
 
 }
