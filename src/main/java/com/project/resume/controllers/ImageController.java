@@ -16,24 +16,34 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/images")
 @Slf4j
+@RequestMapping("/repository")
 public class ImageController {
     private final ImageRepository imageRepository;
-    private static final String STATIC_DIR = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static";
+    private static final String STATIC_DIR = File.separator + "opt" + File.separator + "resume" + File.separator + "images";
 
-    @GetMapping("/repository/{id}")
+    @GetMapping()
+    private String index(Model model) {
+        model.addAttribute("image_list", imageRepository.findAll());
+        model.addAttribute("static_image_list", getStaticImages());
+        return "image/repository";
+    }
+
+    @GetMapping("/{id}")
     private ResponseEntity<?> getDatabaseImageById(@PathVariable Long id) {
         Image image = imageRepository.findById(id).orElse(null);
         assert image != null;
         return ResponseEntity.ok().header("fileName", image.getOriginalFileName()).contentType(MediaType.valueOf(image.getContentType())).contentLength(image.getSize()).body(new InputStreamResource(new ByteArrayInputStream(image.getBytes())));
     }
 
-    @GetMapping("/repository/name/{name}")
+    @GetMapping("/name/{name}")
     private ResponseEntity<?> getDatabaseImageByName(@PathVariable String name) {
         Optional<Image> optionalImage = imageRepository.findAll().stream().filter(x -> x.getName() != null).filter(x -> x.getName().equals(name)).findAny();
         if (optionalImage.isPresent()) {
@@ -44,13 +54,13 @@ public class ImageController {
         }
     }
 
-    @GetMapping("/repository")
-    private String index(Model model) {
-        model.addAttribute("image_list", imageRepository.findAll());
-        return "image/repository";
+    @PostMapping("/{id}/delete")
+    private String deleteDatabaseImagePost(@PathVariable long id) {
+        imageRepository.deleteById(id);
+        return "redirect:/images/repository";
     }
 
-    @PostMapping("/repository/add")
+    @PostMapping("/add")
     private String addDatabaseImagePost(@RequestAttribute(value = "image_file") MultipartFile image_file, @RequestParam(value = "image_name") String name, @RequestParam(value = "image_description") String description) {
         try {
             Image image = toImageEntity(image_file);
@@ -64,21 +74,21 @@ public class ImageController {
         return "redirect:/images/repository";
     }
 
-    @PostMapping("/add")
+    @PostMapping("/add-static")
     private String addStaticImagePost(@RequestAttribute(value = "image_file", required = false) MultipartFile image_file) {
         try {
-            image_file.transferTo(Path.of(STATIC_DIR + File.separator + "images" + File.separator + image_file.getOriginalFilename()));
+            image_file.transferTo(Path.of(STATIC_DIR + File.separator + image_file.getOriginalFilename()));
         } catch (IOException e) {
             log.error("Unable to add image file to static files dir");
             log.error(e.toString());
         }
-        return "redirect:/images/repository";
+        return "redirect:/repository";
     }
 
-    @PostMapping("{id}/delete")
-    private String deleteDatabaseImagePost(@PathVariable long id) {
-        imageRepository.deleteById(id);
-        return "redirect:/images/repository";
+
+    public static List<String> getStaticImages() {
+        File[] file = new File(STATIC_DIR).listFiles();
+        return file == null ? new ArrayList<>() : Arrays.stream(file).map(File::getName).toList();
     }
 
     public static Image toImageEntity(MultipartFile file) throws IOException {
@@ -90,9 +100,8 @@ public class ImageController {
         return image;
     }
 
-
     public static String getImageStaticDir() {
-        return STATIC_DIR + File.separator + "images" + File.separator;
+        return STATIC_DIR + File.separator;
     }
 
 }

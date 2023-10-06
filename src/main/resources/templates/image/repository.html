@@ -14,7 +14,7 @@
     <div class="container">
 
         <div class="p-4 p-md-5 mb-2 mb-md-3 bg-white">
-            <form th:method="POST" th:action="@{/images/repository/add}"
+            <form th:method="POST" th:action="@{/repository/add}"
                   enctype="multipart/form-data">
                 <h1 class="display-6 text-center">Add image to database</h1>
 
@@ -40,7 +40,7 @@
             </form>
 
             <h1 class="display-6 text-center">Add image to static folder</h1>
-            <form th:method="POST" th:action="@{/images/add}"
+            <form th:method="POST" th:action="@{/repository/add-static}"
                   enctype="multipart/form-data">
 
                 <div class="form-group mb-3">
@@ -53,8 +53,32 @@
                 </div>
             </form>
 
-            <h1 class="display-6 text-center">Image database info</h1>
+
+            <!--        list of static images-->
+            <h1 class="display-6 text-center">Image static info</h1>
+            <div class="table-responsive">
+                <table class="my-3 table table-bordered">
+                    <thead class="table-light">
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="image: ${static_image_list}">
+                        <td><a th:href="@{/images/{id} (id = ${image})}" th:text="${image}">Name</a></td>
+                        <td>
+                            <form th:method="post" th:action="@{/delete}">
+                                <button class="btn" type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
             <!--        list of images-->
+            <h1 class="display-6 text-center">Image database info</h1>
             <div class="table-responsive">
                 <table class="my-3 table table-bordered">
                     <thead class="table-light">
@@ -68,12 +92,13 @@
                     </thead>
                     <tbody>
                     <tr th:each="image: ${image_list}">
-                        <td><a th:href="@{/images/repository/{id} (id = ${image.getId()})}" th:text="${image.getId()}">ID</a></td>
+                        <td><a th:href="@{/repository/{id} (id = ${image.getId()})}" th:text="${image.getId()}">ID</a>
+                        </td>
                         <td th:text="${image.getName()}">Name</td>
                         <td th:text="${image.getDescription()}">Description</td>
                         <td th:text="${image.getOriginalFileName()}">File name</td>
                         <td>
-                            <form th:method="post" th:action="@{/images/{id}/delete (id=${image.getId()})}">
+                            <form th:method="post" th:action="@{/repository/{id}/delete (id=${image.getId()})}">
                                 <button class="btn" type="submit">Delete</button>
                             </form>
                         </td>
