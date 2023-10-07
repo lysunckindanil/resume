@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,7 +58,7 @@ public class ImageController {
     @PostMapping("/{id}/delete")
     private String deleteDatabaseImagePost(@PathVariable long id) {
         imageRepository.deleteById(id);
-        return "redirect:/images/repository";
+        return "redirect:/repository";
     }
 
     @PostMapping("/add")
@@ -71,7 +72,7 @@ public class ImageController {
             log.error("Unable to add image file to repository");
             log.error(e.toString());
         }
-        return "redirect:/images/repository";
+        return "redirect:/repository";
     }
 
     @PostMapping("/add-static")
@@ -80,6 +81,17 @@ public class ImageController {
             image_file.transferTo(Path.of(STATIC_DIR + File.separator + image_file.getOriginalFilename()));
         } catch (IOException e) {
             log.error("Unable to add image file to static files dir");
+            log.error(e.toString());
+        }
+        return "redirect:/repository";
+    }
+
+    @PostMapping("/{image}/delete-static")
+    private String deleteStaticImagePost(@PathVariable String image) {
+        try {
+            Files.delete(Path.of(STATIC_DIR + File.separator + image));
+        } catch (IOException e) {
+            log.error("Unable to delete image in static files dir");
             log.error(e.toString());
         }
         return "redirect:/repository";

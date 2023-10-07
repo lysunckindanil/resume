@@ -20,8 +20,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain customSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests()
-                .requestMatchers("/images/*/delete", "/images/repository", "/images/repository/add", "/images/add", "/projects/*/edit",
-                        "/projects/*/delete", "/projects/add")
+                .requestMatchers(
+                        "/repository", "/repository/add", "/repository/add-static",
+                        "/repository/*/delete", "/repository/*/delete-static",
+                        "/projects/*/edit", "/projects/*/delete", "/projects/add")
                 .authenticated()
                 .anyRequest()
                 .permitAll()

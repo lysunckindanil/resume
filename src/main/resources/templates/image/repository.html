@@ -68,7 +68,7 @@
                     <tr th:each="image: ${static_image_list}">
                         <td><a th:href="@{/images/{id} (id = ${image})}" th:text="${image}">Name</a></td>
                         <td>
-                            <form th:method="post" th:action="@{/delete}">
+                            <form th:method="post" th:action="@{/repository/{image}/delete-static (image = ${image})}">
                                 <button class="btn" type="submit">Delete</button>
                             </form>
                         </td>
