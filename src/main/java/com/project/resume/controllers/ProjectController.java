@@ -2,9 +2,7 @@ package com.project.resume.controllers;
 
 import com.project.resume.model.Project;
 import com.project.resume.repo.ProjectRepository;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.data.domain.Sort;
@@ -26,7 +24,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class ProjectController {
-    public static final String PROJECT_FRAGMENT_PATH = "projects" + File.separator + "pages" + File.separator;
+    private static final String PROJECT_FRAGMENT_PATH_TEMPLATES = "projects" + File.separator + "pages" + File.separator;
+    private static final String PROJECT_FRAGMENT_PATH = File.separator + "opt" + File.separator + "resume" + File.separator + "templates" + File.separator + PROJECT_FRAGMENT_PATH_TEMPLATES;
+
     private final ProjectRepository projectRepository;
 
 
@@ -46,17 +46,9 @@ public class ProjectController {
             Project project = projectRepository.findById(id).get();
             // Project fragment for thymeleaf with path and name
             // Fragment file name without extension should be the same as fragment name!
-            @Getter
-            @Setter
-            class Fragment {
-                public String path;
-                public String name;
-            }
-            Fragment fragment = new Fragment();
-            fragment.setName(FilenameUtils.removeExtension(project.getPage()));
-            fragment.setPath(PROJECT_FRAGMENT_PATH + fragment.name);
 
-            model.addAttribute("fragment", fragment);
+            model.addAttribute("fragment_name", FilenameUtils.removeExtension(project.getPage()));
+            model.addAttribute("fragment_path", PROJECT_FRAGMENT_PATH_TEMPLATES + project.getPage());
             model.addAttribute("project", project);
             model.addAttribute("user", principal == null ? "" : principal.getName());
 
@@ -150,8 +142,7 @@ public class ProjectController {
     }
 
     private void saveHtmlPage(MultipartFile file) throws IOException {
-        Path templates_dir = Paths.get("src" + File.separator + "main" + File.separator + "resources" + File.separator + "templates" + File.separator + ProjectController.PROJECT_FRAGMENT_PATH);
-        Path filepath = Paths.get(templates_dir.toString(), file.getOriginalFilename());
+        Path filepath = Paths.get(PROJECT_FRAGMENT_PATH, file.getOriginalFilename());
         file.transferTo(filepath);
     }
 }
