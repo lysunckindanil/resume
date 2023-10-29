@@ -5,16 +5,18 @@
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 </head>
 
-<div th:fragment="header(active)" style="background-color: #C2C9D3">
-    <div class="container">
-        <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3">
-            <div class="col-md-3 mb-2 mb-md-0">
-                <a th:href="@{/login}" class="display-6 link-body-emphasis text-decoration-none">Resume
-                </a>
-            </div>
+<div class="headfoot" id="header" th:fragment="header(active)">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-11">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3">
+                <div class="col-md-3">
+                    <a th:href="@{/login}" class="display-6 link-body-emphasis text-decoration-none">Resume
+                    </a>
+                </div>
 
-            <div th:replace="~{fragments/header :: ${active}}"></div>
-        </header>
+                <div th:replace="~{fragments/header :: ${active}}"></div>
+            </div>
+        </div>
     </div>
 </div>
 

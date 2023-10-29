@@ -10,5 +10,4 @@ public class AboutController {
     public String index() {
         return "about/about_page";
     }
-
 }

@@ -6,80 +6,85 @@
     <title th:text="${project.getTitle()}"></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-<header th:insert="~{fragments/header :: header(active='projects')}"></header>
-<main class="p-2 p-md-4" style="background-color: #ECECEC">
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a th:href="@{/projects}">Проекты</a></li>
-                        <li class="breadcrumb-item active" aria-current="page" th:text="${project.getTitle()}"></li>
-                    </ol>
-                </nav>
+<header>
+    <div th:replace="~{fragments/header :: header(active='projects')}"></div>
+</header>
+<main class="row justify-content-center py-4">
+    <article class="col-md-8 col-11">
+
+        <!--    breadcrump and edit-->
+        <section>
+            <div class="row">
+                <div class="col">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a th:href="@{/projects}">Проекты</a></li>
+                            <li class="breadcrumb-item active" aria-current="page" th:text="${project.getTitle()}"></li>
+                        </ol>
+                    </nav>
+                </div>
             </div>
+        </section>
 
-            <div th:if="${user=='admin'}" class="col-md text-md-end text-center">
-                <div class="dropdown mb-1">
-                    <a class="btn btn-secondary dropdown-toggle"
-                       role="button" data-bs-toggle="dropdown"
-                       aria-expanded="false">
-                        Edit project
-                    </a>
+        <section th:if="${user=='admin'}">
+            <div class="dropdown mb-1">
+                <a class="btn btn-secondary dropdown-toggle"
+                   role="button" data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                    Edit project
+                </a>
 
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a th:href="@{/projects/{id}/edit(id=${project.getId()})}" class="dropdown-item"
-                               href="#">Edit</a></li>
-                        <li>
-                            <button type="button" class="dropdown-item" data-bs-toggle="modal"
-                                    data-bs-target="#projectDeleteModal">
-                                Delete
+                <ul class="dropdown-menu">
+                    <li>
+                        <a th:href="@{/projects/{id}/edit(id=${project.getId()})}" class="dropdown-item"
+                           href="#">Edit</a></li>
+                    <li>
+                        <button type="button" class="dropdown-item" data-bs-toggle="modal"
+                                data-bs-target="#projectDeleteModal">
+                            Delete
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            <!-- Delete Project Modal -->
+            <div class="modal" id="projectDeleteModal" data-bs-backdrop="static"
+                 data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Delete
+                                [[${project.getTitle()}]]?</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure, that you want to delete project?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Close
                             </button>
-                        </li>
-                    </ul>
+                            <form th:method="post"
+                                  th:action="@{/projects/{id}/delete(id=${project.getId()})}">
+                                <button class="btn btn-primary" type="submit">Delete</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
 
+        <section th:insert="~{${fragment_path} :: ${fragment_name}}"></section>
 
-    <!-- Delete Project Modal -->
-    <div class="modal" id="projectDeleteModal" data-bs-backdrop="static"
-         data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
-         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Delete
-                        [[${project.getTitle()}]]?</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure, that you want to delete project?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        Close
-                    </button>
-                    <form th:method="post"
-                          th:action="@{/projects/{id}/delete(id=${project.getId()})}">
-                        <button class="btn btn-primary" type="submit">Delete</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div th:replace="~{${fragment_path} :: ${fragment_name}}"></div>
-
-
+    </article>
 </main>
-<footer th:insert="~{fragments/footer :: footer}"></footer>
+<footer>
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
         crossorigin="anonymous"></script>
