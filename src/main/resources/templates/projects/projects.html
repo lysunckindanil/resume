@@ -20,12 +20,6 @@
             transform: scale(1.03);
         }
     </style>
-
-    <style>
-        p,a {
-            font-size: 18px;
-        }
-    </style>
 </head>
 <body>
 <header>
@@ -35,7 +29,7 @@
     <article class="col-md-8 col-11">
         <!--    Main projects-->
         <section
-                 th:if="${main_projects.size()>0}">
+                th:if="${main_projects.size()>0}">
             <h1 class="display-5 py-3">Основные проекты</h1>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-2">
 
@@ -73,6 +67,7 @@
             </div>
         </section>
 
+        <!--        admin controls-->
         <section th:if="${user=='admin'}" class="my-3">
             <a th:href="@{/projects/add}" class="btn btn-secondary btn-lg d-block mb-1">Создать страницу нового
                 проекта</a>
@@ -84,7 +79,6 @@
 <footer>
     <div th:replace="~{fragments/footer :: footer}"></div>
 </footer>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
         crossorigin="anonymous"></script>

@@ -2,6 +2,8 @@ package com.project.resume.controllers;
 
 import com.project.resume.model.Project;
 import com.project.resume.repo.ProjectRepository;
+import com.project.resume.service.FilesService;
+import com.project.resume.service.Folder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
@@ -12,9 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.List;
 
@@ -24,10 +23,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class ProjectController {
-    private static final String PROJECT_FRAGMENT_PATH_TEMPLATES = "projects" + File.separator + "pages" + File.separator;
-    private static final String PROJECT_FRAGMENT_PATH = File.separator + "opt" + File.separator + "resume" + File.separator + "templates" + File.separator + PROJECT_FRAGMENT_PATH_TEMPLATES;
 
     private final ProjectRepository projectRepository;
+    private final FilesService filesService;
 
 
     @GetMapping()
@@ -47,8 +45,8 @@ public class ProjectController {
             // Project fragment for thymeleaf with path and name
             // Fragment file name without extension should be the same as fragment name!
 
-            model.addAttribute("fragment_name", FilenameUtils.removeExtension(project.getPage()));
-            model.addAttribute("fragment_path", PROJECT_FRAGMENT_PATH_TEMPLATES + project.getPage());
+            model.addAttribute("fragment_name", FilenameUtils.removeExtension(new File(project.getPage()).getName()));
+            model.addAttribute("fragment_path", project.getPage());
             model.addAttribute("project", project);
             model.addAttribute("user", principal == null ? "" : principal.getName());
 
@@ -67,23 +65,10 @@ public class ProjectController {
     @PostMapping("/add")
     private String addProjectPost(@ModelAttribute Project project, @RequestParam(value = "page_file") MultipartFile page_file, @RequestParam(value = "image_file") MultipartFile image_file) {
 
-        try {
-            // this method copies received file to PROJECT_FRAGMENT_PATH
-            saveHtmlPage(page_file);
-            project.setPage(page_file.getOriginalFilename());
-        } catch (IOException e) {
-            log.error("Unable to transfer html page");
-        }
+        // this method copies received file to PROJECT_PAGES
+        project.setPage(filesService.addFileToFolderStatic(page_file, Folder.PROJECT_PAGES));
 
-        try {
-            image_file.transferTo(Path.of(ImageController.getImageStaticDir() + image_file.getOriginalFilename()));
-            project.setImage(image_file.getOriginalFilename());
-        } catch (IOException e) {
-            log.error("Unable to add image file to static files dir");
-            log.error(e.toString());
-        }
-
-
+        project.setImage(filesService.addFileToFolderStatic(image_file, Folder.IMAGES));
         projectRepository.save(project);
         return "redirect:/projects/" + project.getId();
     }
@@ -104,24 +89,12 @@ public class ProjectController {
 
             // changes project's page html only if file was passed to the method
             if (!page_file.isEmpty()) {
-                try {
-                    saveHtmlPage(page_file);
-                    original_project.setPage(page_file.getOriginalFilename());
-                } catch (IOException e) {
-                    log.error("Unable to transfer html page");
-                }
+                original_project.setPage(filesService.addFileToFolderStatic(page_file, Folder.PROJECT_PAGES));
             }
 
             // changes project's title image only if file was passed to the method
             if (!image_file.isEmpty()) {
-
-                try {
-                    image_file.transferTo(Path.of(ImageController.getImageStaticDir() + image_file.getOriginalFilename()));
-                    original_project.setImage(image_file.getOriginalFilename());
-                } catch (IOException e) {
-                    log.error("Unable to add image file to static files dir");
-                    log.error(e.toString());
-                }
+                original_project.setImage(filesService.addFileToFolderStatic(image_file, Folder.IMAGES));
             }
 
             original_project.setTitle(project.getTitle());
@@ -141,8 +114,4 @@ public class ProjectController {
         return "redirect:/projects";
     }
 
-    private void saveHtmlPage(MultipartFile file) throws IOException {
-        Path filepath = Paths.get(PROJECT_FRAGMENT_PATH, file.getOriginalFilename());
-        file.transferTo(filepath);
-    }
 }

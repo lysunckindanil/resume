@@ -2,6 +2,8 @@ package com.project.resume.controllers;
 
 import com.project.resume.model.Image;
 import com.project.resume.repo.ImageRepository;
+import com.project.resume.service.FilesService;
+import com.project.resume.service.Folder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
@@ -13,12 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +25,7 @@ import java.util.Optional;
 @RequestMapping("/repository")
 public class ImageController {
     private final ImageRepository imageRepository;
-    private static final String STATIC_DIR = File.separator + "opt" + File.separator + "resume" + File.separator + "images";
+    private final FilesService filesService;
 
     @GetMapping()
     private String index(Model model) {
@@ -77,30 +74,19 @@ public class ImageController {
 
     @PostMapping("/add-static")
     private String addStaticImagePost(@RequestAttribute(value = "image_file", required = false) MultipartFile image_file) {
-        try {
-            image_file.transferTo(Path.of(STATIC_DIR + File.separator + image_file.getOriginalFilename()));
-        } catch (IOException e) {
-            log.error("Unable to add image file to static files dir");
-            log.error(e.toString());
-        }
+        filesService.addFileToFolderStatic(image_file, Folder.IMAGES);
         return "redirect:/repository";
     }
 
     @PostMapping("/{image}/delete-static")
     private String deleteStaticImagePost(@PathVariable String image) {
-        try {
-            Files.delete(Path.of(STATIC_DIR + File.separator + image));
-        } catch (IOException e) {
-            log.error("Unable to delete image in static files dir");
-            log.error(e.toString());
-        }
+        filesService.deleteFileFromStaticFolder(image, Folder.IMAGES);
         return "redirect:/repository";
     }
 
 
-    public static List<String> getStaticImages() {
-        File[] file = new File(STATIC_DIR).listFiles();
-        return file == null ? new ArrayList<>() : Arrays.stream(file).map(File::getName).toList();
+    public List<String> getStaticImages() {
+        return filesService.getListOfFilesFromStaticDir(Folder.IMAGES);
     }
 
     public static Image toImageEntity(MultipartFile file) throws IOException {
@@ -111,9 +97,4 @@ public class ImageController {
         image.setBytes(file.getBytes());
         return image;
     }
-
-    public static String getImageStaticDir() {
-        return STATIC_DIR + File.separator;
-    }
-
 }

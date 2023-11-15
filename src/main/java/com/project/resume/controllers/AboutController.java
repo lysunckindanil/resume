@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class AboutController {
     @GetMapping
     public String index() {
-        return "about/about_page";
+        return "templates/about/about_page";
     }
 }

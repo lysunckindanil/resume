@@ -29,6 +29,7 @@
             </div>
         </section>
 
+        <!--        admin controls-->
         <section th:if="${user=='admin'}">
             <div class="dropdown mb-1">
                 <a class="btn btn-secondary dropdown-toggle"
@@ -78,7 +79,7 @@
             </div>
         </section>
 
-        <section th:insert="~{${fragment_path} :: ${fragment_name}}"></section>
+        <section class="project_page" th:insert="~{${fragment_path} :: ${fragment_name}}"></section>
 
     </article>
 </main>
