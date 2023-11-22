@@ -1,4 +1,4 @@
-package com.project.resume.service;
+package com.project.resume.service.enums;
 
 public enum Folder {
     IMAGES, PROJECT_PAGES

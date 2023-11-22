@@ -3,7 +3,7 @@ package com.project.resume.controllers;
 import com.project.resume.model.Project;
 import com.project.resume.repo.ProjectRepository;
 import com.project.resume.service.FilesService;
-import com.project.resume.service.Folder;
+import com.project.resume.service.enums.Folder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
@@ -56,7 +56,7 @@ public class ProjectController {
     }
 
     @GetMapping("/add")
-    String addProject(Model model) {
+    private String addProject(Model model) {
         // returns project creation form with model attribute
         model.addAttribute("project", new Project());
         return "projects/new";

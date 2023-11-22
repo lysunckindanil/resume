@@ -1,9 +1,9 @@
 package com.project.resume.controllers;
 
 import com.project.resume.model.Image;
-import com.project.resume.repo.ImageRepository;
 import com.project.resume.service.FilesService;
-import com.project.resume.service.Folder;
+import com.project.resume.service.enums.Folder;
+import com.project.resume.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
@@ -23,52 +23,39 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/repository")
-public class ImageController {
-    private final ImageRepository imageRepository;
+public class RepositoryController {
     private final FilesService filesService;
+    private final ImageService imageService;
 
     @GetMapping()
     private String index(Model model) {
-        model.addAttribute("image_list", imageRepository.findAll());
+        model.addAttribute("image_list", imageService.findAllImages());
         model.addAttribute("static_image_list", getStaticImages());
         return "image/repository";
     }
 
     @GetMapping("/{id}")
     private ResponseEntity<?> getDatabaseImageById(@PathVariable Long id) {
-        Image image = imageRepository.findById(id).orElse(null);
-        assert image != null;
-        return ResponseEntity.ok().header("fileName", image.getOriginalFileName()).contentType(MediaType.valueOf(image.getContentType())).contentLength(image.getSize()).body(new InputStreamResource(new ByteArrayInputStream(image.getBytes())));
-    }
-
-    @GetMapping("/name/{name}")
-    private ResponseEntity<?> getDatabaseImageByName(@PathVariable String name) {
-        Optional<Image> optionalImage = imageRepository.findAll().stream().filter(x -> x.getName() != null).filter(x -> x.getName().equals(name)).findAny();
+        Optional<Image> optionalImage = imageService.findImageById(id);
         if (optionalImage.isPresent()) {
             Image image = optionalImage.get();
             return ResponseEntity.ok().header("fileName", image.getOriginalFileName()).contentType(MediaType.valueOf(image.getContentType())).contentLength(image.getSize()).body(new InputStreamResource(new ByteArrayInputStream(image.getBytes())));
-        } else {
-            return ResponseEntity.badRequest().body(new Object());
         }
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{id}/delete")
     private String deleteDatabaseImagePost(@PathVariable long id) {
-        imageRepository.deleteById(id);
+        imageService.deleteImageById(id);
         return "redirect:/repository";
     }
 
     @PostMapping("/add")
     private String addDatabaseImagePost(@RequestAttribute(value = "image_file") MultipartFile image_file, @RequestParam(value = "image_name") String name, @RequestParam(value = "image_description") String description) {
-        try {
-            Image image = toImageEntity(image_file);
-            image.setName(name);
-            image.setDescription(description);
-            imageRepository.save(image);
-        } catch (IOException e) {
-            log.error("Unable to add image file to repository");
-            log.error(e.toString());
-        }
+        Image image = toImageEntity(image_file);
+        image.setName(name);
+        image.setDescription(description);
+        imageService.saveImage(image);
         return "redirect:/repository";
     }
 
@@ -84,17 +71,21 @@ public class ImageController {
         return "redirect:/repository";
     }
 
-
-    public List<String> getStaticImages() {
+    private List<String> getStaticImages() {
         return filesService.getListOfFilesFromStaticDir(Folder.IMAGES);
     }
 
-    public static Image toImageEntity(MultipartFile file) throws IOException {
+    private static Image toImageEntity(MultipartFile file) {
         Image image = new Image();
         image.setOriginalFileName(file.getOriginalFilename());
         image.setContentType(file.getContentType());
         image.setSize(file.getSize());
-        image.setBytes(file.getBytes());
+        try {
+            image.setBytes(file.getBytes());
+        } catch (IOException e) {
+            log.error("Unable to convert image to entity");
+            log.error(e.toString());
+        }
         return image;
     }
 }
