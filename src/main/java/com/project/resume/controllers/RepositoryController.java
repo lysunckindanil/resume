@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -71,7 +70,7 @@ public class RepositoryController {
         return "redirect:/repository";
     }
 
-    private List<String> getStaticImages() {
+    private String[] getStaticImages() {
         return filesService.getListOfFilesFromStaticDir(Folder.IMAGES);
     }
 

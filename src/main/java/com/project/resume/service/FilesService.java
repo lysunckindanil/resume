@@ -9,9 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @Service
 @Slf4j
@@ -37,8 +34,7 @@ public class FilesService {
         }
     }
 
-    public List<String> getListOfFilesFromStaticDir(Folder folder) {
-        File[] file = new File(STATIC_DIR + folder.toString().toLowerCase()).listFiles();
-        return file == null ? new ArrayList<>() : Arrays.stream(file).map(File::getName).toList();
+    public String[] getListOfFilesFromStaticDir(Folder folder) {
+        return new File(STATIC_DIR + folder.toString().toLowerCase()).list();
     }
 }
