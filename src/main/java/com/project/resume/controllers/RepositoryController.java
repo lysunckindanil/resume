@@ -29,13 +29,13 @@ public class RepositoryController {
     @GetMapping()
     private String index(Model model) {
         model.addAttribute("image_list", imageService.findAllImages());
-        model.addAttribute("static_image_list", getStaticImages());
+        model.addAttribute("static_image_list", filesService.getListOfFilesFromStaticDir(Folder.IMAGES));
         return "image/repository";
     }
 
     @GetMapping("/{id}")
     private ResponseEntity<?> getDatabaseImageById(@PathVariable Long id) {
-        Optional<Image> optionalImage = imageService.findImageById(id);
+        Optional<Image> optionalImage = imageService.findById(id);
         if (optionalImage.isPresent()) {
             Image image = optionalImage.get();
             return ResponseEntity.ok().header("fileName", image.getOriginalFileName()).contentType(MediaType.valueOf(image.getContentType())).contentLength(image.getSize()).body(new InputStreamResource(new ByteArrayInputStream(image.getBytes())));
@@ -45,7 +45,7 @@ public class RepositoryController {
 
     @PostMapping("/{id}/delete")
     private String deleteDatabaseImagePost(@PathVariable long id) {
-        imageService.deleteImageById(id);
+        imageService.deleteById(id);
         return "redirect:/repository";
     }
 
@@ -54,7 +54,7 @@ public class RepositoryController {
         Image image = toImageEntity(image_file);
         image.setName(name);
         image.setDescription(description);
-        imageService.saveImage(image);
+        imageService.save(image);
         return "redirect:/repository";
     }
 
@@ -68,10 +68,6 @@ public class RepositoryController {
     private String deleteStaticImagePost(@PathVariable String image) {
         filesService.deleteFileFromStaticFolder(image, Folder.IMAGES);
         return "redirect:/repository";
-    }
-
-    private String[] getStaticImages() {
-        return filesService.getListOfFilesFromStaticDir(Folder.IMAGES);
     }
 
     private static Image toImageEntity(MultipartFile file) {

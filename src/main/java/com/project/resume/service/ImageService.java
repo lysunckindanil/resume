@@ -13,7 +13,7 @@ import java.util.Optional;
 public class ImageService {
     private final ImageRepository imageRepository;
 
-    public void saveImage(Image image) {
+    public void save(Image image) {
         imageRepository.save(image);
     }
 
@@ -21,11 +21,11 @@ public class ImageService {
         return imageRepository.findAll();
     }
 
-    public Optional<Image> findImageById(long id) {
+    public Optional<Image> findById(long id) {
         return imageRepository.findById(id);
     }
 
-    public void deleteImageById(long id) {
+    public void deleteById(long id) {
         imageRepository.deleteById(id);
     }
 }
