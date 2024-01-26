@@ -11,16 +11,16 @@ import lombok.Setter;
 public class Project implements Comparable<Project> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Integer id;
 
     public Project() {
         this.order = 0;
     }
 
     @Column(name = "order_list")
-    private int order;
+    private Integer order;
 
-    private boolean main;
+    private Boolean main;
 
     private String title;
 
