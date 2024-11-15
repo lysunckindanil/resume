@@ -59,8 +59,4 @@ public class ProjectService {
     public List<Project> findAll(Sort sort) {
         return projectRepository.findAll(sort);
     }
-
-    public List<Project> findAll() {
-        return projectRepository.findAll();
-    }
 }
