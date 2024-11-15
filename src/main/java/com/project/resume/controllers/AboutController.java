@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class AboutController {
     @GetMapping
-    public String index() {
-        return "about/about_page";
+    private String index() {
+        return "templates/about/about_page";
     }
-
 }

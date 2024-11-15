@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ResourceController {
     @GetMapping("/resources")
-    public String resources() {
-        return "resources/resources_page";
+    private String resources() {
+        return "templates/resources/resources_page";
     }
 }
