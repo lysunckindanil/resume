@@ -1,9 +1,7 @@
 package com.project.resume.controllers;
 
 import com.project.resume.model.Project;
-import com.project.resume.service.FilesService;
 import com.project.resume.service.ProjectService;
-import com.project.resume.service.enums.Folder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
@@ -26,8 +24,6 @@ import java.util.Optional;
 public class ProjectController {
 
     private final ProjectService projectService;
-    private final FilesService filesService;
-
 
     @GetMapping()
     private String projects(Principal principal, Model model) {
@@ -65,11 +61,7 @@ public class ProjectController {
 
     @PostMapping("/add")
     private String addProjectPost(@ModelAttribute Project project, @RequestParam(value = "page_file") MultipartFile page_file, @RequestParam(value = "image_file") MultipartFile image_file) {
-
-        // this method copies received file to PROJECT_PAGES
-        project.setPage(filesService.addFileToFolderStatic(page_file, Folder.PROJECT_PAGES));
-        project.setImage(filesService.addFileToFolderStatic(image_file, Folder.IMAGES));
-        projectService.save(project);
+        projectService.save(project, page_file, image_file);
         return "redirect:/projects/" + project.getId();
     }
 
@@ -84,29 +76,9 @@ public class ProjectController {
     }
 
     @PostMapping("/{id}/edit")
-    private String editProjectPost(@ModelAttribute Project project, @PathVariable("id") int id, @RequestParam(value = "page_file", required = false) MultipartFile page_file, @RequestParam(value = "image_file", required = false) MultipartFile image_file) {
-        if (projectService.findById(id).isPresent()) {
-            Project original_project = projectService.findById(id).get();
-
-            // changes project's page html only if file was passed to the method
-            if (!page_file.isEmpty()) {
-                original_project.setPage(filesService.addFileToFolderStatic(page_file, Folder.PROJECT_PAGES));
-            }
-
-            // changes project's title image only if file was passed to the method
-            if (!image_file.isEmpty()) {
-                original_project.setImage(filesService.addFileToFolderStatic(image_file, Folder.IMAGES));
-            }
-
-            original_project.setTitle(project.getTitle());
-            original_project.setDescription(project.getDescription());
-            original_project.setMain(project.getMain());
-            original_project.setOrder(project.getOrder());
-
-            projectService.save(original_project);
-            return "redirect:/projects/" + project.getId();
-        }
-        return "service/error";
+    private String editProjectPost(@ModelAttribute Project project, @RequestParam(value = "page_file", required = false) MultipartFile page_file, @RequestParam(value = "image_file", required = false) MultipartFile image_file) {
+        projectService.edit(project, page_file, image_file);
+        return "redirect:/projects/" + project.getId();
     }
 
     @PostMapping("/{id}/delete")
