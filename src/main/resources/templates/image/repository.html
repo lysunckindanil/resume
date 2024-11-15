@@ -17,33 +17,6 @@
 
     <article class="container p-4 p-md-5 mb-2 mb-md-3 bg-white">
         <section>
-            <h1 class="display-6 text-center">Add image to database</h1>
-            <form th:method="POST" th:action="@{/repository/add}"
-                  enctype="multipart/form-data">
-
-                <div class="form-group mb-3">
-                    <label for="title">Image name</label>
-                    <input name="image_name" type="text" class="form-control" id="title" placeholder="Enter label"
-                           required>
-                </div>
-
-                <div class="form-group mb-3">
-                    <label for="description">Image description</label>
-                    <input name="image_description" type="text" class="form-control" id="description"
-                           placeholder="Enter description">
-                </div>
-
-                <div class="form-group mb-3">
-                    <label for="image" class="form-label">Image file</label>
-                    <input class="form-control" name="image_file" type="file" id="image" required>
-                </div>
-                <div class="text-md-start text-center">
-                    <button type="submit" class="btn btn-primary m-md-2">Add image to repository</button>
-                </div>
-            </form>
-        </section>
-
-        <section>
             <h1 class="display-6 text-center">Add image to static folder</h1>
             <form th:method="POST" th:action="@{/repository/add-static}"
                   enctype="multipart/form-data">
@@ -76,38 +49,6 @@
                         <td><a th:href="@{/images/{id} (id = ${image})}" th:text="${image}">Name</a></td>
                         <td>
                             <form th:method="post" th:action="@{/repository/{image}/delete-static (image = ${image})}">
-                                <button class="btn" type="submit">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!--        list of images-->
-        <section>
-            <h1 class="display-6 text-center">Image database info</h1>
-            <div class="table-responsive">
-                <table class="my-3 table table-bordered">
-                    <thead class="table-light">
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">File name</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="image: ${image_list}">
-                        <td><a th:href="@{/repository/{id} (id = ${image.getId()})}" th:text="${image.getId()}">ID</a>
-                        </td>
-                        <td th:text="${image.getName()}">Name</td>
-                        <td th:text="${image.getDescription()}">Description</td>
-                        <td th:text="${image.getOriginalFileName()}">File name</td>
-                        <td>
-                            <form th:method="post" th:action="@{/repository/{id}/delete (id=${image.getId()})}">
                                 <button class="btn" type="submit">Delete</button>
                             </form>
                         </td>
