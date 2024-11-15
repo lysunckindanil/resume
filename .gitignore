@@ -34,3 +34,4 @@ build/
 
 application.properties
 images/
+src/main/resources/templates/projects/pages
