@@ -4,14 +4,12 @@ import com.project.resume.model.Project;
 import com.project.resume.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
@@ -42,8 +40,8 @@ public class ProjectController {
             // Project fragment for thymeleaf with path and name
             // Fragment file name without extension should be the same as fragment name!
 
-            model.addAttribute("fragment_name", FilenameUtils.removeExtension(new File(project.getPage()).getName()));
-            model.addAttribute("fragment_path", project.getPage());
+            model.addAttribute("fragment_name", projectService.getFragmentNameOfProject(project));
+            model.addAttribute("fragment_path", projectService.getFragmentPathOfProject(project));
             model.addAttribute("project", project);
             model.addAttribute("user", principal == null ? "" : principal.getName());
 

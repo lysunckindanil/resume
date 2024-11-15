@@ -21,14 +21,13 @@ public class FilesService {
     String projects_path;
 
 
-    public String addFileToFolderStatic(MultipartFile file, Folder folder) {
+    public void addFileToFolderStatic(MultipartFile file, Folder folder) {
         try {
             file.transferTo(Path.of(getPath(folder) + file.getOriginalFilename()));
         } catch (IOException e) {
             log.error(String.format("Unable to transfer %s to static folder %s", file.getOriginalFilename(), folder));
             log.error(e.toString());
         }
-        return folder.toString().toLowerCase() + "/" + file.getOriginalFilename();
     }
 
     public void deleteFileFromStaticFolder(String file, Folder folder) {
