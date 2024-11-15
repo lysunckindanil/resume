@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class ResourceController {
     @GetMapping("/resources")
     private String resources() {
-        return "templates/resources/resources_page";
+        return "resources/resources_page";
     }
 }
