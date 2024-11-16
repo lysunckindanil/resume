@@ -21,15 +21,13 @@ public class SecurityConfig {
     public SecurityFilterChain customSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests()
                 .requestMatchers(
-                        "/repository", "/repository/add", "/repository/add-static",
-                        "/repository/*/delete", "/repository/*/delete-static",
+                        "/repository/**",
                         "/projects/*/edit", "/projects/*/delete", "/projects/add")
                 .authenticated()
                 .anyRequest()
                 .permitAll()
                 .and()
                 .formLogin();
-
         return http.build();
     }
 

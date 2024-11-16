@@ -39,7 +39,6 @@ public class ProjectController {
             Project project = projectService.findById(id).get();
             // Project fragment for thymeleaf with path and name
             // Fragment file name without extension should be the same as fragment name!
-
             model.addAttribute("fragment_name", projectService.getFragmentNameOfProject(project));
             model.addAttribute("fragment_path", projectService.getFragmentPathOfProject(project));
             model.addAttribute("project", project);
