@@ -25,6 +25,7 @@ public class ProjectController {
 
     @GetMapping()
     private String projects(Principal principal, Model model) {
+        log.info("Project page opened");
         List<Project> projects = projectService.findAll(Sort.by(Sort.Direction.ASC, "id"));
         model.addAttribute("main_projects", projects.stream().filter(Project::getMain).sorted().toList());
         model.addAttribute("other_projects", projects.stream().filter(x -> !x.getMain()).sorted().toList());
@@ -43,7 +44,7 @@ public class ProjectController {
             model.addAttribute("fragment_path", projectService.getFragmentPathOfProject(project));
             model.addAttribute("project", project);
             model.addAttribute("user", principal == null ? "" : principal.getName());
-
+            log.info("Project page opened: %s".formatted(project.getTitle()));
             return "projects/project";
         }
         return "service/error";
