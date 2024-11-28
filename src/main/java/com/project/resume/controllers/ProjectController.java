@@ -5,6 +5,7 @@ import com.project.resume.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +25,8 @@ public class ProjectController {
     private final ProjectService projectService;
 
     @GetMapping()
-    private String projects(Principal principal, Model model) {
-        log.info("Project page opened");
+    private String projects(Principal principal, Model model, @RequestHeader(HttpHeaders.USER_AGENT) String userAgent) {
+        log.info("Projects page opened, userAgent: {}", userAgent);
         List<Project> projects = projectService.findAll(Sort.by(Sort.Direction.ASC, "id"));
         model.addAttribute("main_projects", projects.stream().filter(Project::getMain).sorted().toList());
         model.addAttribute("other_projects", projects.stream().filter(x -> !x.getMain()).sorted().toList());
@@ -34,7 +35,7 @@ public class ProjectController {
     }
 
     @GetMapping("/{id}")
-    private String project(@PathVariable("id") int id, Principal principal, Model model) {
+    private String project(@PathVariable("id") int id, Principal principal, Model model, @RequestHeader(HttpHeaders.USER_AGENT) String userAgent) {
         // if projects doesn't exist by id, then sends to error page
         if (projectService.findById(id).isPresent()) {
             Project project = projectService.findById(id).get();
@@ -44,7 +45,8 @@ public class ProjectController {
             model.addAttribute("fragment_path", projectService.getFragmentPathOfProject(project));
             model.addAttribute("project", project);
             model.addAttribute("user", principal == null ? "" : principal.getName());
-            log.info("Project page opened: %s".formatted(project.getTitle()));
+            log.info("Project page opened, project: {}, userAgent: {}", project.getPage(), userAgent);
+
             return "projects/project";
         }
         return "service/error";
